@@ -1,0 +1,181 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:focusable="true"
+    android:focusableInTouchMode="true" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical" >
+        
+        <FrameLayout 
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            
+            
+            
+            <LinearLayout
+	            android:id="@+id/RelativeLayout1"
+	            android:layout_width="match_parent"
+	            android:layout_height="50dp"
+	            android:background="@drawable/title_basic"
+	            android:orientation="horizontal" >
+
+            <FrameLayout
+				android:id="@+id/btn_back"
+				android:layout_width="50dp"
+				android:layout_height="50dp">
+	          
+	          <ImageView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:src="@drawable/btn_back"
+				android:layout_gravity="center_vertical|center_horizontal"/>
+	             
+	        </FrameLayout>
+            
+            <TextView 
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"/>
+
+            
+            <Button
+                android:id="@+id/detail_share_btn"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center_vertical"
+                android:background="@drawable/img_share"
+                android:visibility="gone" />
+            
+            <FrameLayout
+				android:id="@+id/detail_config_btn"
+				android:layout_width="50dp"
+				android:layout_height="50dp">
+	          
+                <ImageView
+	                android:layout_width="10dp"
+	                android:layout_height="30dp"
+	                android:layout_gravity="center_vertical|center_horizontal"
+	                android:background="@drawable/img_more" />
+	             
+	        </FrameLayout>
+            
+            
+
+            
+
+        </LinearLayout>
+            
+            
+       		 <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical|center_horizontal">
+
+	   		     <TextView android:id="@+id/detail_header_male_name" 
+	   		         android:layout_width="wrap_content" 
+	   		         android:layout_height="wrap_content" 
+	   		         android:layout_marginRight="5dp" 
+	   		         android:layout_gravity="center_vertical" 
+	   		         android:text="" 
+	   		         android:textColor="#ffffff" />
+       		     
+                <ImageView
+                    android:id="@+id/hart_img"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/wcard_icon_heart" />
+                
+                <TextView 
+                    android:id="@+id/detail_header_female_name" 
+                    android:layout_width="wrap_content" 
+                    android:layout_height="wrap_content" 
+                    android:layout_marginLeft="5dp" 
+                    android:layout_gravity="center_vertical" 
+                    android:text="" 
+                    android:textColor="#ffffff" />
+
+            </LinearLayout>
+            
+        </FrameLayout>
+
+        
+
+        <ListView
+            android:id="@+id/detail_list"
+            android:layout_width="match_parent"
+            android:layout_height="0dip"
+            android:layout_weight="1"
+            android:background="#ffffff"
+            android:divider="#ffffff"
+            android:dividerHeight="1dp" >
+        </ListView>
+        
+        <ImageView 
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/img_pop_line01"
+            android:scaleType="fitXY"/>
+        
+        <LinearLayout
+            android:id="@+id/detail_reple"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:background="#f5f5f5"
+            android:orientation="horizontal" >
+
+
+            <EditText
+                android:id="@+id/detail_reple_edit"
+                android:layout_width="0dip"
+                android:layout_height="35dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/img_edit_box"
+                android:textSize="13dp"
+                android:hint="댓글을 남겨주세요." >
+
+            </EditText>
+
+            <Button
+                android:id="@+id/detail_ok_btn"
+                android:layout_width="40dp"
+                android:layout_height="23dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/btn_send" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/EditLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="45dp"
+        android:orientation="horizontal"
+        android:visibility="invisible" >
+
+        <ImageView
+            android:id="@+id/btn_sub_modify"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/btn_sub_modify" />
+
+        <ImageView
+            android:id="@+id/btn_sub_delete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/btn_sub_delete" />
+
+    </LinearLayout>
+
+</FrameLayout>

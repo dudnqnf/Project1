@@ -1,0 +1,478 @@
+package com.takebox.wedding.model;
+
+import java.io.ByteArrayOutputStream;
+import java.util.Map;
+
+import org.json.JSONObject;
+
+import android.graphics.Bitmap;
+
+import com.takebox.wedding.info.Info;
+import com.takebox.wedding.util.HttpMultiPart;
+
+public class WeddingModel {
+
+	
+	/**
+	 * 웨딩박스 등록 
+	 * @return
+	 */
+	public static JSONObject procWeddingMake(Map<String, String> data){
+		HttpMultiPart hmp = new HttpMultiPart();
+		
+
+		String res = "";
+		try {
+			System.out.println("req : " +  data);
+			res = hmp.transfer(Info.MASTER_URL+"/makeWedRoom.take", data);
+			System.out.println("res : " + res.trim());
+			JSONObject obj = new JSONObject(res.trim());
+
+			return obj;
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
+		return null;
+	}
+	
+	
+	/**
+	 * 웨딩프로필 삭제 
+	 * @return
+	 */
+	public static JSONObject procRoomImgDelete(Map<String, String> data){
+		HttpMultiPart hmp = new HttpMultiPart();
+	
+		String res = "";
+		try {
+			System.out.println("req : " +  data);
+			res = hmp.transfer(Info.MASTER_URL+"/deleteAllProfileImgWedRoom.take", data);
+			System.out.println("res : " + res.trim());
+			JSONObject obj = new JSONObject(res.trim());
+
+			return obj;
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
+		return null;
+	}
+	
+	
+	/**
+	 * 웨딩박스 가져오기
+	 * @return
+	 */
+	public static JSONObject procGetWeddingRoom(Map<String, String> data){
+		HttpMultiPart hmp = new HttpMultiPart();
+		
+
+		String res = "";
+		try {
+			System.out.println("req : " +  data);
+			res = hmp.transfer(Info.MASTER_URL+"/m_mybox_search.take", data);
+			System.out.println("res : " + res.trim());
+			JSONObject obj = new JSONObject(res.trim());
+
+			return obj;
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
+		return null;
+	}
+	
+	
+	/**
+	 * 웨딩룸사진 수정
+	 * @return
+	 */
+	public static JSONObject procRoomImgUpload(Map<String, String> data, Bitmap bm){
+		HttpMultiPart hmp = new HttpMultiPart();
+
+		String res = "";
+		try {
+			System.out.println("req : " +  data);
+			res = hmp.transfer(Info.MASTER_URL+"/wedRoomProfileUpdatePicture.take", data, bm);
+			System.out.println("res : " + res.trim());
+			JSONObject obj = new JSONObject(res.trim());
+
+			return obj;
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
+		return null;
+	}
+
+	
+	/**
+	 * 웨딩룸사진 여러장 업로드
+	 * @return
+	 */
+	public static JSONObject procRoomImgMultiUpload(Map<String, String> data, ByteArrayOutputStream[] bos){
+		HttpMultiPart hmp = new HttpMultiPart();
+
+		String res = "";
+		try {
+			System.out.println("req : " +  data);
+			res = hmp.transfer(Info.MASTER_URL+"/wedRoomProfileUpdatePicture.take", data, bos);
+			System.out.println("res : " + res.trim());
+			JSONObject obj = new JSONObject(res.trim());
+
+			return obj;
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
+		return null;
+	}
+	
+	
+	
+	
+	
+	/**
+	 * 웨딩룸 설명 수정
+	 * @return
+	 */
+	public static JSONObject procUpdateRoomDes(Map<String, String> data){
+		HttpMultiPart hmp = new HttpMultiPart();
+		
+
+		String res = "";
+		try {
+			System.out.println("req : " +  data);
+			res = hmp.transfer(Info.MASTER_URL+"/m_updateRoomInfDescription.take", data);
+			System.out.println("res : " + res.trim());
+			JSONObject obj = new JSONObject(res.trim());
+
+			return obj;
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
+		return null;
+	}
+	
+	
+	
+	
+	
+	
+	
+	/**
+	 * 웨딩룸 리스트 가져오기
+	 * @return
+	 */
+	public static String procGetRoomList(Map<String, String> data){
+		HttpMultiPart hmp = new HttpMultiPart();
+		
+
+		String res = "";
+		try {
+			System.out.println("req : " +  data);
+			res = hmp.transfer(Info.MASTER_URL+"/getChooseWed.take", data);
+			System.out.println("res : " + res.trim());
+
+			return res.trim();
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
+		return null;
+	}
+	
+	
+
+	/**
+	 * 웨딩룸 리스트 가져오기
+	 * 손님이거나 방주인으로 있는 방 정보
+	 * @return
+	 */
+	public static JSONObject procGetUserRoomList(Map<String, String> data){
+		HttpMultiPart hmp = new HttpMultiPart();
+		
+
+		String res = "";
+		try {
+			System.out.println("req : " +  data);
+			res = hmp.transfer(Info.MASTER_URL+"/getUserRoomList.take", data);
+			System.out.println("res : " + res.trim());
+			JSONObject obj = new JSONObject(res.trim());
+			
+			return obj;
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
+		return null;
+	}
+	
+	
+	
+	
+	/**
+	 * 웨딩 사진 등록(업로드)
+	 * @return
+	 */
+	public static JSONObject procImgUpload(Map<String, String> data, Bitmap bm){
+		HttpMultiPart hmp = new HttpMultiPart();
+		
+
+		String res = "";
+		try {
+			System.out.println("req : " +  data);
+			res = hmp.transfer(Info.MASTER_URL+"/wedPictureUpload.take", data, bm);
+			System.out.println("res : " + res.trim());
+			JSONObject obj = new JSONObject(res.trim());
+
+			return obj;
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
+		return null;
+	}
+	
+	/**
+	 * 앨범 카테고리 등록
+	 * @return
+	 */
+	public static JSONObject procSaveCreateAlbum(Map<String, String> data){
+		HttpMultiPart hmp = new HttpMultiPart();
+		
+
+		String res = "";
+		try {
+			System.out.println("req : " +  data);
+			res = hmp.transfer(Info.MASTER_URL+"/saveCreateAlbum.take", data);
+			System.out.println("res : " + res.trim());
+			JSONObject obj = new JSONObject(res.trim());
+
+			return obj;
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
+		return null;
+	}
+	
+	
+	/**
+	 * 앨범 카테고리 삭제
+	 * @return
+	 */
+	public static JSONObject procDeleteAlbum(Map<String, String> data){
+		HttpMultiPart hmp = new HttpMultiPart();
+		
+
+		String res = "";
+		try {
+			System.out.println("req : " +  data);
+			res = hmp.transfer(Info.MASTER_URL+"/deleteAlbum.take", data);
+			System.out.println("res : " + res.trim());
+			JSONObject obj = new JSONObject(res.trim());
+
+			return obj;
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
+		return null;
+	}
+	
+	
+	
+	
+	
+	/**
+	 * 웨딩룸에 초대된 사람 리스트 가져오기
+	 * @return
+	 */
+	public static JSONObject procGetInviteUser(Map<String, String> data){
+		HttpMultiPart hmp = new HttpMultiPart();
+		
+
+		String res = "";
+		try {
+			System.out.println("req : " +  data);
+			res = hmp.transfer(Info.MASTER_URL+"/getInviteUser.take", data);
+			System.out.println("res : " + res.trim());
+			JSONObject obj = new JSONObject(res.trim());
+
+			return obj;
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
+		return null;
+	}
+	
+	
+	
+	
+	
+	
+	/**
+	 * 웨딩룸 아이디로 신랑신부 이름 확인
+	 * @return
+	 */
+	public static JSONObject procFindRoomID(Map<String, String> data){
+		HttpMultiPart hmp = new HttpMultiPart();
+		
+
+		String res = "";
+		try {
+			System.out.println("req : " +  data);
+			res = hmp.transfer(Info.MASTER_URL+"/getMaleFemaleName.take", data);
+			System.out.println("res : " + res.trim());
+			JSONObject obj = new JSONObject(res.trim());
+
+			return obj;
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
+		return null;
+	}
+	
+	
+	/**
+	 * 앱 버전 체크
+	 * @return
+	 */
+	public static JSONObject VersionCheck(Map<String, String> data){
+		HttpMultiPart hmp = new HttpMultiPart();
+		
+
+		String res = "";
+		try {
+			System.out.println("req : " +  data);
+			res = hmp.transfer(Info.MASTER_UTIL_URL+"/version.php", data);
+			System.out.println("res : " + res.trim());
+			JSONObject obj = new JSONObject(res.trim());
+
+			return obj;
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
+		return null;
+	}
+	
+	
+	/**
+	 * 쇼핑데이터불러오기
+	 * @return
+	 */
+	public static JSONObject loadShoppingInfo(Map<String, String> data){
+		HttpMultiPart hmp = new HttpMultiPart();
+		
+
+		String res = "";
+		try {
+			System.out.println("req : " +  data);
+			res = hmp.transfer(Info.MASTER_URL+"/getShopInfo.take", data);
+			System.out.println("res : " + res.trim());
+			JSONObject obj = new JSONObject(res.trim());
+
+			return obj;
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
+		return null;
+	}
+	
+	
+	/**
+	 * 쇼핑데이터불러오기
+	 * @return
+	 */
+	public static JSONObject tracker(Map<String, String> data){
+		HttpMultiPart hmp = new HttpMultiPart();
+		
+
+		String res = "";
+		try {
+			System.out.println("req : " +  data);
+			res = hmp.transfer(Info.MASTER_URL+"/updateInviteCount.take", data);
+			System.out.println("res : " + res.trim());
+			JSONObject obj = new JSONObject(res.trim());
+
+			return obj;
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
+		return null;
+	}
+	
+	
+	/**
+	 * 쇼핑 tracker
+	 * @return
+	 */
+	public static JSONObject saveShopInfo(Map<String, String> data){
+		HttpMultiPart hmp = new HttpMultiPart();
+		
+
+		String res = "";
+		try {
+			System.out.println("req : " +  data);
+			res = hmp.transfer(Info.MASTER_URL+"/saveShopInfo.take", data);
+			System.out.println("res : " + res.trim());
+			JSONObject obj = new JSONObject(res.trim());
+
+			return obj;
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
+		return null;
+	}
+	
+	/**
+	 * 웨딩룸 지우기
+	 * @return
+	 */
+	public static JSONObject procDeleteRoom(Map<String, String> data){
+		HttpMultiPart hmp = new HttpMultiPart();
+		
+
+		String res = "";
+		try {
+			System.out.println("req : " +  data);
+			res = hmp.transfer(Info.MASTER_URL+"/delWedRoom.take", data);
+			System.out.println("res : " + res.trim());
+			JSONObject obj = new JSONObject(res.trim());
+
+			return obj;
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
+		return null;
+	}
+	
+}

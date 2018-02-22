@@ -1,0 +1,89 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ececec"
+    android:orientation="vertical"
+    android:focusable="true"
+    android:focusableInTouchMode="true" >
+	
+    <RelativeLayout 
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/title_bar"
+        android:background="@drawable/title_shopping"
+        >
+        <FrameLayout
+			android:onClick="btnBack"
+			android:layout_width="50dp"
+			android:layout_height="50dp">
+	         <ImageView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:src="@drawable/btn_back"
+				android:layout_gravity="center_vertical|center_horizontal"/>
+        </FrameLayout>
+
+        
+    </RelativeLayout>   
+    
+    <RelativeLayout 
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/title_bar"
+        >
+        <ListView
+            android:id="@+id/shopping_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:divider="#00000000"
+            android:dividerHeight="0dp"
+            android:dividerPadding="10dp" >
+        </ListView>
+        
+        
+        <RelativeLayout 
+            android:layout_width="match_parent"
+	        android:layout_height="match_parent"
+	        android:id="@+id/webview_layout"
+            >
+
+	        <LinearLayout
+	            android:id="@+id/main_tab"
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+	            android:layout_alignParentBottom="true"
+	            android:orientation="horizontal" >
+	
+	            <Button
+	                android:onClick="goBack"
+	                android:layout_width="0dip"
+	                android:layout_height="wrap_content"
+	                android:layout_weight="1"
+	                android:background="@drawable/btn_shop_before" />
+	
+	            <Button
+	                android:onClick="goForward"
+	                android:layout_width="0dip"
+	                android:layout_height="wrap_content"
+	                android:layout_weight="1"
+	                android:background="@drawable/btn_shop_next" />
+	
+	            <Button
+	                android:onClick="refreshWeb"
+	                android:layout_width="0dip"
+	                android:layout_height="wrap_content"
+	                android:layout_weight="1"
+	                android:background="@drawable/btn_shop_refresh_01" />
+	        </LinearLayout>
+	         <WebView
+	            android:id="@+id/webview"
+	            android:layout_width="match_parent"
+	            android:layout_height="match_parent"
+	            android:layout_above="@+id/main_tab"
+	            android:layout_weight="1" />  
+        </RelativeLayout>
+    </RelativeLayout>
+</RelativeLayout>

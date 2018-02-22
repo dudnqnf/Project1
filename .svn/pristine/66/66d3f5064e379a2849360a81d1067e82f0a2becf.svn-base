@@ -1,0 +1,153 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+     >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/back_log_bg"
+        android:orientation="vertical" >
+
+        <RelativeLayout 
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:id="@+id/title_bar"
+	        android:background="@drawable/join_title"
+	        >
+	        
+	    </RelativeLayout>   
+		
+        <ScrollView 
+            android:layout_width="match_parent"
+		    android:layout_height="match_parent"
+		    android:background="#ffffff"
+            >
+        
+           <LinearLayout 
+                android:layout_width="match_parent"
+		    	android:layout_height="match_parent"
+		    	android:orientation="vertical" 
+                >
+            
+		        <Button
+		            android:id="@+id/join_facebook_btn"
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:layout_gravity="center_horizontal"
+		            android:layout_marginTop="22dp"
+		            android:background="@drawable/btn_facebook"
+		            android:visibility="visible"
+		            android:minWidth="1dp"
+		            android:minHeight="1dp"
+		            android:layout_marginLeft="17dp"
+		            android:layout_marginRight="17dp" />
+		        
+		        <com.kakao.widget.LoginButton
+			        android:id="@+id/join_kakao_btn"
+			        android:layout_width="wrap_content"
+			        android:layout_height="wrap_content"
+			        android:layout_gravity="center_horizontal"
+			        android:layout_marginTop="7dp"
+			        android:background="@drawable/btn_log_kakao"
+			        android:layout_marginLeft="17dp"
+		            android:layout_marginRight="17dp" />
+		        
+		        <Button 
+		            android:id="@+id/join_google_btn"
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:layout_gravity="center_horizontal"
+			        android:layout_marginTop="7dp"
+		            android:background="@drawable/btn_log_google"
+		            android:minHeight="1dp"
+            		android:minWidth="1dp"
+		            android:layout_marginLeft="17dp"
+		            android:layout_marginRight="17dp" />
+		        
+		        <Button 
+		            android:id="@+id/join_naver_btn"
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:layout_gravity="center_horizontal"
+			        android:layout_marginTop="7dp"
+		            android:background="@drawable/btn_log_naver"
+		            android:minHeight="1dp"
+		            android:minWidth="1dp"
+		            android:layout_marginLeft="17dp"
+		            android:layout_marginRight="17dp" />
+		        
+		        <ImageView 
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:src="@drawable/join_text"
+		            android:layout_marginTop="17dp"
+		            android:layout_marginLeft="17dp"
+		            android:layout_marginRight="17dp"/>
+		        
+		
+		        <EditText
+		            android:id="@+id/join_email_edit"
+		            android:layout_width="match_parent"
+		            android:layout_height="@dimen/edit_box_height"
+		            android:layout_marginLeft="17dp"
+		            android:layout_marginRight="17dp"
+		            android:singleLine="true"
+		            android:layout_gravity="center_horizontal"
+		            android:layout_marginTop="10dp"
+		            android:background="@drawable/img_edit_box"
+		            android:ems="10"
+		            android:hint="이메일"
+		            android:inputType="textEmailAddress"/>
+		        
+		        <EditText
+		            android:id="@+id/join_password_edit"
+		            android:layout_width="match_parent"
+		            android:layout_height="@dimen/edit_box_height"
+		            android:layout_gravity="center_horizontal"
+		            android:layout_marginTop="14dp"
+		            android:layout_marginLeft="17dp"
+		            android:layout_marginRight="17dp"
+		            android:singleLine="true"
+		            android:background="@drawable/img_edit_box"
+		            android:ems="10"
+		            android:hint="비밀번호"
+		            android:inputType="textPassword" />
+		
+		        <EditText
+		            android:id="@+id/join_password2_edit"
+		            android:layout_width="match_parent"
+		            android:layout_height="@dimen/edit_box_height"
+		            android:layout_gravity="center_horizontal"
+		            android:layout_marginTop="14dp"
+		            android:layout_marginLeft="17dp"
+		            android:layout_marginRight="17dp"
+		            android:singleLine="true"
+		            android:background="@drawable/img_edit_box"
+		            android:ems="10"
+		            android:hint="비밀번호 확인"
+		            android:inputType="textPassword" />
+
+		
+		        <Button
+		            android:id="@+id/join_ok_btn"
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:layout_gravity="center_horizontal"
+		            android:layout_marginBottom="28dp"
+		            android:layout_marginTop="37dp"
+		            android:background="@drawable/btn_small_confirm"
+		            android:minHeight="1dp"
+		            android:minWidth="1dp" />
+		
+			</LinearLayout>
+    	</ScrollView>
+    </LinearLayout>
+
+            
+            
+            
+</RelativeLayout>

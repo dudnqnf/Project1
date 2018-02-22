@@ -1,0 +1,107 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/LinearLayout1"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:focusable="true"
+    android:focusableInTouchMode="true" >
+      
+	<RelativeLayout 
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/title_bar"
+        android:background="@drawable/title_setting"
+        >
+
+    </RelativeLayout>
+		
+	<ScrollView 
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+       	<LinearLayout 
+		    android:layout_width="match_parent"
+		    android:layout_height="wrap_content"
+		    android:layout_gravity="center_horizontal"
+		    android:orientation="vertical" >
+		   
+		    <ImageView
+		        android:id="@+id/profile_image_add_btn"
+		        android:layout_width="match_parent"
+		        android:layout_height="240dp"
+		        android:scaleType="fitXY"
+		        android:src="@drawable/img_card_defult" />
+		    
+		    <LinearLayout 
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_gravity="center_horizontal"
+		    	android:orientation="vertical">
+		        
+		        <ImageView
+			        android:id="@+id/imageView2"
+			        android:layout_width="wrap_content"
+			        android:layout_height="wrap_content"
+			        android:layout_gravity="center_horizontal"
+			        android:layout_marginTop="13dp"
+			        android:src="@drawable/join_profile_text_01" />
+			        
+		        <Button
+			        android:id="@+id/profile_id_edit_btn"
+			        android:layout_width="match_parent"
+			        android:layout_height="@dimen/edit_box_height"
+			        android:layout_gravity="center_horizontal"
+			        android:background="@drawable/img_edit_box"
+			        android:singleLine="true"
+			        android:gravity="center_vertical"
+			        android:layout_marginTop="10dp"
+			        android:layout_marginLeft="5dp"
+			        android:layout_marginRight="5dp"
+			        android:minHeight="1dip"
+			        android:minWidth="1dip" />
+		        
+		        <ImageView
+			        android:id="@+id/imageView3"
+			        android:layout_width="wrap_content"
+			        android:layout_height="wrap_content"
+			        android:layout_gravity="center_horizontal"
+			        android:layout_marginTop="13dp"
+			        android:src="@drawable/join_profile_text_02" />
+		        
+		        <RelativeLayout 
+			        android:layout_width="match_parent"
+				    android:layout_height="130dp"
+				    android:layout_marginTop="10dp"
+				    android:layout_marginLeft="5dp"
+			        android:layout_marginRight="5dp"
+				    android:layout_gravity="center_horizontal"
+			        >
+				    <TextView
+				        android:id="@+id/profile_bio_edit"
+				        android:layout_width="wrap_content"
+				        android:layout_height="130dp"
+				        android:layout_gravity="center_horizontal"
+				        android:background="@drawable/img_edit_box"
+				        android:maxLength="200"
+				        android:hint="@string/default_bio" />
+				   
+			    </RelativeLayout>
+			
+			    <Button
+			        android:id="@+id/profile_next_btn"
+			        android:layout_width="wrap_content"
+			        android:layout_height="wrap_content"
+			        android:layout_gravity="center_horizontal"
+			        android:layout_marginTop="10dp"
+			        android:minHeight="1dp"
+			        android:background="@drawable/btn_small_confirm" 
+			        android:layout_marginBottom="15dp"
+			        />
+		        
+		    </LinearLayout>
+		
+		    
+		</LinearLayout>
+	</ScrollView>
+</LinearLayout>

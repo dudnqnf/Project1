@@ -1,0 +1,450 @@
+package com.takebox.wedding;
+
+import java.util.ArrayList;
+
+import android.app.Activity;
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.Typeface;
+import android.os.Bundle;
+import android.os.Message;
+import android.os.Parcelable;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
+import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.webkit.WebChromeClient;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.androidquery.AQuery;
+import com.google.analytics.tracking.android.EasyTracker;
+import com.takebox.wedding.info.Info;
+import com.takebox.wedding.util.CustomTextFont;
+import com.takebox.wedding.util.Time;
+import com.takebox.wedding.R;
+
+public class ProfileViewActivity extends Activity {
+	public static final int NAVERMAP = 4;
+	private ProgressDialog pd = null;
+	private Thread mThread = null;
+	TextView name1;		//Bride or Groom's name
+	TextView name2;		//Fiance(e)'s name
+	TextView place;
+	TextView Date;		//Wedding Date
+	TextView time;
+	TextView Bio;		//Wedding Bio
+	ImageView imgv;
+	public String room_id;
+	public String male_name;
+	public String female_name;
+	public String wed_date;
+	public String wed_time;
+	public String description;
+	public String place_name;
+	public String img_name1;
+	public String img_name2;
+	public String img_name3;
+	public String room_seq;
+	public String auth;
+	public String placename;
+	public String returning_img_url;
+	public ViewPager mPager;
+	public String current_img_url1;
+	public String current_img_url2;
+	public String current_img_url3;
+	public String []img_url;
+	public ArrayList<ImageView> pointImgArray;
+	public LinearLayout mPagerPoints;
+	public String latitude;
+	public String longitude;
+	public String card_type;
+	
+	private static WebView mWebView;
+	
+	@Override
+	protected void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
+		mWebView.reload();
+	}
+	
+	/** Called when the activity is first created. */
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+	    super.onCreate(savedInstanceState);
+	    setContentView(R.layout.activity_profile_view);
+	    // TODO Auto-generated method stub
+	    
+	    Intent i =getIntent();
+	    
+	    room_id = i.getStringExtra("room_id");
+	    male_name = i.getStringExtra("male_name");
+	    female_name = i.getStringExtra("female_name");
+	    wed_date = i.getStringExtra("wed_date");
+	    wed_time = i.getStringExtra("wed_time");
+	    description = i.getStringExtra("description");
+	    img_name1 = i.getStringExtra("img_name1");
+	    img_name2 = i.getStringExtra("img_name2");
+	    img_name3 = i.getStringExtra("img_name3");
+	    room_seq = i.getStringExtra("room_seq");
+	    auth = i.getStringExtra("auth");
+	    placename = i.getStringExtra("place");
+	    latitude = i.getStringExtra("latitude");
+	    longitude = i.getStringExtra("longitude");
+	    card_type = i.getStringExtra("card_type");
+	    
+	    name1 = (TextView)findViewById(R.id.wedding_card_man);
+	    name1.setText(male_name);
+	    name1.setTypeface(CustomTextFont.hunsomsatangR);
+	    name2 = (TextView)findViewById(R.id.wedding_card_woman);
+	    name2.setText(female_name);
+	    name2.setTypeface(CustomTextFont.hunsomsatangR);
+	    place = (TextView)findViewById(R.id.wedding_card_place_text);
+	    place.setText(placename);
+	    place.setTypeface(CustomTextFont.NanumGothic);
+	    Date = (TextView)findViewById(R.id.wedding_card_date_text);
+	    Date.setText(Time.calculateDate(wed_date));
+	    Date.setTypeface(CustomTextFont.NanumGothic);
+	    time = (TextView)findViewById(R.id.wedding_card_time_text);
+	    time.setText(Time.calculateTime(wed_time));
+	    time.setTypeface(CustomTextFont.NanumGothic);
+	    Bio = (TextView)findViewById(R.id.wedding_card_bio);
+	    Bio.setText(description);
+	    Bio.setTypeface(CustomTextFont.NanumGothic);
+//	    imgv = (ImageView)findViewById(R.id.photo);
+	    current_img_url1 = Info.MASTER_FILE_URL + "/image/"+ img_name1;
+	    current_img_url2 = Info.MASTER_FILE_URL + "/image/"+ img_name2;
+	    current_img_url3 = Info.MASTER_FILE_URL + "/image/"+ img_name3;
+	    
+	    img_url = new String[3];
+    	img_url[0] = current_img_url1;
+    	img_url[1] = current_img_url2;
+    	img_url[2] = current_img_url3;
+	    
+////	    System.out.println(img_url);
+//		AQuery aq = new AQuery(ProfileViewActivity.this);
+//		aq.id(imgv).image(current_img_url, true, true);
+	    
+	    FrameLayout btn = (FrameLayout)findViewById(R.id.go_edit_button);
+		TextView inner_btn = (TextView)findViewById(R.id.go_edit_inner_button);
+		inner_btn.setTypeface(CustomTextFont.hunsomsatangR);
+	    Log.i("AUTH", auth);
+	    if(!auth.equals("admin")){
+	    	btn.setVisibility(View.INVISIBLE);
+	    }
+	    btn.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(ProfileViewActivity.this, ProfileEditActivity.class);
+				intent.putExtra("room_id", room_id);
+				intent.putExtra("male_name", male_name);
+				intent.putExtra("female_name", female_name);
+				intent.putExtra("wed_date", wed_date);
+				intent.putExtra("wed_time", wed_time);
+				intent.putExtra("description", description);
+				intent.putExtra("img_name1", img_name1);
+				intent.putExtra("img_name2", img_name2);
+				intent.putExtra("img_name3", img_name3);
+				intent.putExtra("room_seq", room_seq);
+				intent.putExtra("place_name", placename);
+				intent.putExtra("img_url1", current_img_url1);
+				intent.putExtra("img_url2", current_img_url2);
+				intent.putExtra("img_url3", current_img_url3);
+				intent.putExtra("latitude", latitude);
+				intent.putExtra("longitude", longitude);
+				intent.putExtra("card_type", card_type);
+				
+				startActivityForResult(intent, 0);
+			}
+		});
+	    
+	    mPagerPoints = (LinearLayout)findViewById(R.id.point_layout);
+	    setImagePoint(3);
+	    
+	    mPager = (ViewPager)findViewById(R.id.pager);
+	    mPager.setAdapter(new PagerAdapterClass(getApplicationContext()));
+	    
+		mPager.setOnPageChangeListener(new OnPageChangeListener() {
+			
+			@Override
+			public void onPageSelected(int arg0) {
+				// TODO Auto-generated method stub
+				for(int i=0; i<pointImgArray.size();i++){
+					pointImgArray.get(i).setImageResource(R.drawable.picture_focus_off);
+				}
+				pointImgArray.get(arg0).setImageResource(R.drawable.picture_focus_on);
+			}
+			
+			@Override
+			public void onPageScrolled(int arg0, float arg1, int arg2) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void onPageScrollStateChanged(int arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+		
+		Button map = (Button)findViewById(R.id.profile_view_map);
+		map.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				double lati = Double.parseDouble(latitude);
+				double longi = Double.parseDouble(longitude);
+				if((lati<30 && lati>40 && longi<120 && longi>130) || (lati==37.5666091 && longi==126.978371)){
+					Toast.makeText(ProfileViewActivity.this, "약도를 지정하지 않았습니다.", Toast.LENGTH_SHORT).show();
+				} else {
+					Intent intent = new Intent(ProfileViewActivity.this, NaverMapActivity.class);
+					intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
+					intent.putExtra("latitude", latitude);
+					intent.putExtra("longitude", longitude);
+					intent.putExtra("flag", "view");
+					intent.putExtra("place", placename);
+					startActivityForResult(intent, NAVERMAP);
+					overridePendingTransition(0, 0);
+				}
+			}
+		});
+		
+		setWebView();
+		
+	}
+	
+	public void setWebView(){
+		String url = "http://m.takebox.co.kr/invite/"+ room_id;
+		mWebView = (WebView) findViewById(R.id.webview);
+		mWebView.setWebViewClient(new WebviewSetting());
+		mWebView.setWebChromeClient(new WebChromeClient(){
+			@Override
+			public boolean onCreateWindow(WebView view, boolean dialog, boolean userGesture, Message resultMsg) {
+
+				WebView newWebView = new WebView(ProfileViewActivity.this); 
+				WebView.WebViewTransport transport = (WebView.WebViewTransport)resultMsg.obj;
+				transport.setWebView(newWebView);
+				resultMsg.sendToTarget();
+
+		 		return true;
+			}
+		});
+		WebSettings webset = mWebView.getSettings();
+		webset.setJavaScriptEnabled(true);
+		webset.setJavaScriptCanOpenWindowsAutomatically(true);
+		webset.setBuiltInZoomControls(false);
+		webset.setPluginState(WebSettings.PluginState.ON_DEMAND);
+		webset.setSupportMultipleWindows(true);
+		webset.setSupportZoom(false);
+		webset.setBlockNetworkImage(false);
+		webset.setLoadsImagesAutomatically(true);
+		webset.setUseWideViewPort(true);
+		webset.setCacheMode(WebSettings.LOAD_NO_CACHE);
+		webset.setLoadWithOverviewMode(true);
+		
+		mWebView.loadUrl(url);
+	}
+	
+	private class PagerAdapterClass extends PagerAdapter{
+		
+		private LayoutInflater mInflater;
+		
+		public PagerAdapterClass(Context c){
+			super();
+			mInflater = LayoutInflater.from(c);
+		}
+
+		@Override
+		public int getCount() {
+			// TODO Auto-generated method stub
+			return 3;
+		}
+		
+		@Override
+        public Object instantiateItem(View pager, final int position) {
+            View v = null;
+            
+            if(position==0){
+                v = mInflater.inflate(R.layout.photo_fragment, null);
+                ImageView onView = (ImageView)v.findViewById(R.id.photo);
+                AQuery aq = new AQuery(ProfileViewActivity.this);
+                if(!current_img_url1.contains("null"))
+                	aq.id(onView).image(current_img_url1, true, true);
+                v.setOnClickListener(new OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						Intent intent = new Intent(ProfileViewActivity.this,
+								ViewPagerActivity.class);
+						intent.putExtra("IMAGES", img_url);
+						intent.putExtra("INDEX", position);
+						startActivity(intent);
+					}
+				});
+//              v.findViewById(R.id.btn_click).setOnClickListener(mPagerListener);
+            }
+            else if(position==1){
+            	v = mInflater.inflate(R.layout.photo_fragment, null);
+                ImageView onView = (ImageView)v.findViewById(R.id.photo);
+                AQuery aq = new AQuery(ProfileViewActivity.this);
+                if(!current_img_url2.contains("null"))
+        		aq.id(onView).image(current_img_url2, true, true);
+                v.setOnClickListener(new OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						Intent intent = new Intent(ProfileViewActivity.this,
+								ViewPagerActivity.class);
+						intent.putExtra("IMAGES", img_url);
+						intent.putExtra("INDEX", position);
+						startActivity(intent);
+					}
+				});
+//              v.findViewById(R.id.btn_click).setOnClickListener(mPagerListener);
+            }else{
+            	v = mInflater.inflate(R.layout.photo_fragment, null);
+                ImageView onView = (ImageView)v.findViewById(R.id.photo);
+                AQuery aq = new AQuery(ProfileViewActivity.this);
+                if(!current_img_url3.contains("null"))
+        		aq.id(onView).image(current_img_url3, true, true);
+                v.setOnClickListener(new OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						Intent intent = new Intent(ProfileViewActivity.this,
+								ViewPagerActivity.class);
+						intent.putExtra("IMAGES", img_url);
+						intent.putExtra("INDEX", position);
+						startActivity(intent);
+					}
+				});
+            }
+            
+            ((ViewPager)pager).addView(v, 0);
+             
+            return v; 
+        }
+		
+		@Override
+        public void destroyItem(View pager, int position, Object view) {    
+            ((ViewPager)pager).removeView((View)view);
+        }
+         
+        @Override
+        public boolean isViewFromObject(View pager, Object obj) {
+            return pager == obj; 
+        }
+ 
+        @Override public void restoreState(Parcelable arg0, ClassLoader arg1) {}
+        @Override public Parcelable saveState() { return null; }
+        @Override public void startUpdate(View arg0) {}
+        @Override public void finishUpdate(View arg0) {}
+    }
+	
+	public void setImagePoint(int count){
+		pointImgArray = new ArrayList<ImageView>();
+		for(int i = 0; i<count; i++){
+			ImageView img = new ImageView(getApplicationContext());
+			img.setImageResource(R.drawable.picture_focus_off);
+			pointImgArray.add(img);
+			mPagerPoints.addView(pointImgArray.get(i));
+			pointImgArray.get(i).setPadding(5, 0, 5, 0);
+		}
+		pointImgArray.get(0).setImageResource(R.drawable.picture_focus_on);
+		
+		
+		if(count < 2){
+			mPagerPoints.setVisibility(View.GONE);
+		}
+	}
+	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if(requestCode == 0 && resultCode == ProfileEditActivity.RESULTCODE){
+			room_id = data.getStringExtra("room_id");
+		    male_name = data.getStringExtra("male_name");
+		    female_name = data.getStringExtra("female_name");
+		    wed_date = data.getStringExtra("wed_date");
+		    wed_time = data.getStringExtra("wed_time");
+		    description = data.getStringExtra("description");
+		    placename = data.getStringExtra("place_name");
+		    current_img_url1 = data.getStringExtra("img_url1");
+		    current_img_url2 = data.getStringExtra("img_url2");
+		    current_img_url3 = data.getStringExtra("img_url3");
+		    latitude = data.getStringExtra("latitude");
+		    longitude = data.getStringExtra("longitude");
+		    card_type = data.getStringExtra("card_type");
+		    
+		    System.out.println("room_id : " + room_id);
+		    System.out.println("male_name : " + male_name);
+		    System.out.println("female_name : " + female_name);
+		    System.out.println("wed_date : " + wed_date);
+		    System.out.println("wed_time : " + wed_time);
+		    System.out.println("description : " + description);
+			
+			name1 = (TextView)findViewById(R.id.wedding_card_man);
+		    name1.setText(male_name);
+		    name1.setTypeface(CustomTextFont.hunsomsatangR);
+		    name2 = (TextView)findViewById(R.id.wedding_card_woman);
+		    name2.setText(female_name);
+		    name2.setTypeface(CustomTextFont.hunsomsatangR);
+		    place = (TextView)findViewById(R.id.wedding_card_place_text);
+		    place.setText(placename);
+		    place.setTypeface(CustomTextFont.NanumGothic);
+		    Date = (TextView)findViewById(R.id.wedding_card_date_text);
+		    Date.setText(Time.calculateDate(wed_date));
+		    Date.setTypeface(CustomTextFont.NanumGothic);
+		    time = (TextView)findViewById(R.id.wedding_card_time_text);
+		    time.setText(Time.calculateTime(wed_time));
+		    time.setTypeface(CustomTextFont.NanumGothic);
+		    Bio = (TextView)findViewById(R.id.wedding_card_bio);
+		    Bio.setText(description);
+		    Bio.setTypeface(CustomTextFont.NanumGothic);
+		    imgv = (ImageView)findViewById(R.id.photo);
+//		    returning_img_url = data.getStringExtra("img_url");
+//		    System.out.println("img_url : " + returning_img_url);
+//	//	    System.out.println(img_url);
+//			AQuery aq = new AQuery(ProfileViewActivity.this);
+//			aq.id(imgv).image(returning_img_url, true, true);
+		    
+		    img_url = new String[3];
+	    	img_url[0] = current_img_url1;
+	    	img_url[1] = current_img_url2;
+	    	img_url[2] = current_img_url3;
+		    
+		    mPager.setAdapter(new PagerAdapterClass(getApplicationContext()));
+		}
+	}
+	
+	
+	@Override
+	public void onStart() {
+		super.onStart();
+		//analytics 분석도구 
+		EasyTracker.getInstance(this).activityStart(this);  // Add this method.
+	}
+
+	@Override
+	public void onStop() {
+		super.onStop();
+		//analytics 분석도구 
+		EasyTracker.getInstance(this).activityStop(this);  // Add this method.
+
+	}
+}
+
+
+
+
+
+
+

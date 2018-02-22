@@ -1,0 +1,16 @@
+package com.takebox.wedding;
+
+public class EditCategoryData {
+	public String category;
+	public String cata_seq;
+	
+	public EditCategoryData (String category, String cata_seq){
+		this.category = category;
+		this.cata_seq = cata_seq;
+	}
+
+	@Override
+	public String toString() {
+		return category.toString();
+	}
+}

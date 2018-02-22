@@ -1,0 +1,146 @@
+package com.takebox.wedding;
+
+import java.util.ArrayList;
+
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.webkit.WebView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.TextView;
+
+import com.androidquery.AQuery;
+import com.takebox.wedding.util.CustomTextFont;
+import com.takebox.wedding.R;
+import com.takebox.wedding.ShoppingActivity.ShoppingGridItem;
+
+
+public class ShoppingGridAdapter extends ArrayAdapter<ShoppingGridItem> {
+
+	private ArrayList<ShoppingGridItem> items;
+
+	private Context mContext;
+	private Activity mActivity;
+
+	private String[] img;
+	private String[] title;
+	private String[] no;
+	private String[] url;
+	private String[] content;
+
+	private int items_size;
+
+	public ShoppingGridAdapter(ShoppingActivity activity, int textViewResourceId, ArrayList<ShoppingGridItem> items) {
+		super(activity.getApplicationContext(), textViewResourceId, items);
+		mContext = activity.getApplicationContext();
+		mActivity = activity;
+		this.items = items;
+
+		items_size = items.size();
+
+		img = new String[items.size()];
+		title = new String[items.size()];
+		no = new String[items.size()];
+		url = new String[items.size()];
+
+		for(int i=0; i<items.size(); i++){
+			img[i] = items.get(i).img;
+			title[i] = items.get(i).title;
+			no[i] = items.get(i).no;
+			url[i] = items.get(i).url;
+		}
+
+
+	}
+	
+	LayoutInflater vi;
+	@Override
+	public View getView(int position, View convertView, ViewGroup parent) {
+		final int pos = position;
+		View v = convertView;
+
+		if(pos % 2 != 0){
+			if(v == null){
+				vi = (LayoutInflater)mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+			}
+			v = vi.inflate(R.layout.row_blank, null);
+			return v;
+		}
+
+		if (v == null) {
+			vi = (LayoutInflater)mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+		}
+		v = vi.inflate(R.layout.shopping_grid, null);
+
+		final ShoppingGridItem p = items.get(pos);
+		final ShoppingGridItem p2;
+		if(items_size > pos + 1){
+			p2 = items.get(pos + 1);
+		}else{
+			p2 = null;
+		}
+
+		if (p != null) {
+			TextView tv_text1 = (TextView)v.findViewById(R.id.shopping_text1);
+			tv_text1.setText(p.title);
+			tv_text1.setTypeface(CustomTextFont.hunsomsatangR);
+			
+			ImageView iv_img1 = (ImageView)v.findViewById(R.id.shopping_img1);
+			
+			if(!p.img.equals("")){
+				//이미지 출력
+				AQuery aq =new AQuery(mContext);
+				aq.id(iv_img1).image(p.img, true, true);
+			}else{
+				iv_img1.setVisibility(View.INVISIBLE);
+			}
+
+			iv_img1.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					// TODO Auto-generated method stub
+					((ShoppingActivity) mActivity).onItemClick(p.url);
+				}
+			});
+
+		}
+
+		if (p2 != null) {
+			
+			TextView tv_text2 = (TextView)v.findViewById(R.id.shopping_text2);
+			tv_text2.setText(p2.title);
+			tv_text2.setTypeface(CustomTextFont.hunsomsatangR);
+			
+			ImageView iv_img2 = (ImageView)v.findViewById(R.id.shopping_img2);
+
+			if(!p2.img.equals("")){
+				//이미지 출력
+				AQuery aq =new AQuery(mContext);
+				aq.id(iv_img2).image(p2.img, true, true);
+			}else{
+				iv_img2.setVisibility(View.INVISIBLE);
+			}
+			iv_img2.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					// TODO Auto-generated method stub
+					((ShoppingActivity) mActivity).onItemClick(p2.url);
+				}
+			});
+		}
+		return v;
+	}
+
+	
+	
+}
+
+

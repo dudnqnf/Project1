@@ -1,0 +1,74 @@
+<resources>
+
+    <!--
+        Base application theme, dependent on API level. This theme is replaced
+        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
+    -->
+    <style name="AppBaseTheme" parent="Theme.AppCompat.Light">
+        <!--
+            Theme customizations available in newer API levels can go in
+            res/values-vXX/styles.xml, while customizations related to
+            backward-compatibility can go here.
+        -->
+    </style>
+
+    <!-- Application theme. -->
+    <style name="AppTheme" parent="AppBaseTheme">
+         <item name="android:windowNoTitle">true</item>
+        <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+    </style>
+    
+    <style name="com_kakao_profile_property_label" parent="@android:style/Widget.TextView">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">@dimen/com_kakao_profile_property_margin</item>
+        <item name="android:layout_marginLeft">@dimen/com_kakao_profile_property_margin</item>
+        <item name="android:layout_marginRight">@dimen/com_kakao_profile_property_margin</item>
+        <item name="android:textSize">@dimen/com_kakao_profile_property_text</item>
+        <item name="android:textColor">@color/com_kakao_profile_text</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="com_kakao_profile_property_value" parent="@android:style/Widget.EditText">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">@dimen/com_kakao_profile_property_margin</item>
+        <item name="android:layout_marginLeft">@dimen/com_kakao_profile_property_margin</item>
+        <item name="android:layout_marginRight">@dimen/com_kakao_profile_property_margin</item>
+        <item name="android:textSize">@dimen/com_kakao_profile_property_text</item>
+        <item name="android:paddingLeft">@dimen/com_kakao_padding</item>
+        <item name="android:inputType">text</item>
+    </style>
+    
+    <style name="Button">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_margin">2dip</item>
+    </style>
+
+    <style name="Button.Menu" parent="Button">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:ellipsize">marquee</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:lines">1</item>
+        <item name="android:onClick">onButtonClick</item>
+    </style>
+
+    <style name="Button.Settings" parent="Button">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:onClick">onClearClick</item>
+	    <item name="android:textSize">14sp</item>
+	    <item name="android:layout_height">wrap_content</item>
+    </style>
+    
+    <style name="EditText">
+    	<item name="android:paddingLeft">8sp</item>
+    	<item name="android:paddingTop">0sp</item>
+    	<item name="android:paddingBottom">0sp</item>
+	    <item name="android:layout_height">wrap_content</item>
+	    <item name="android:textSize">14sp</item>
+	    <item name="android:gravity">center_vertical</item>
+    </style>
+	
+
+</resources>

@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal" >
+    
+		<LinearLayout 
+		    android:id="@+id/template01"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:orientation="vertical"
+	        android:layout_weight="1"
+	        android:layout_marginRight="9dp">
+	        
+	        <TextView 
+	            android:id="@+id/template_title1"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="#01"
+	            android:layout_gravity="center_horizontal"
+	            android:gravity="center_horizontal"/>
+	        
+	        <FrameLayout 
+	            android:layout_width="match_parent"
+	            android:layout_height="180dp">
+	            
+	            <ImageView 
+		            android:id="@+id/template_img1"
+		            android:layout_width="match_parent"
+		            android:layout_height="match_parent"
+		            android:layout_gravity="center_horizontal"
+		            android:src="@drawable/ic_launcher"
+		            android:scaleType="fitXY"/>
+	        </FrameLayout>
+	        
+	        <ImageView 
+		        android:id="@+id/template_box_radio1"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:src="@drawable/btn_radio"
+	            android:layout_gravity="center_horizontal"
+	            android:layout_marginTop="5dp"/>
+	        
+	    </LinearLayout>
+	    
+	    <LinearLayout 
+	        android:id="@+id/template02"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:orientation="vertical"
+	        android:layout_weight="1"
+	        android:layout_marginRight="9dp">
+	        
+	        <TextView 
+	            android:id="@+id/template_title2"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="#02"
+	            android:gravity="center_horizontal"
+	            android:layout_gravity="center_horizontal"/>
+	        
+	        <FrameLayout 
+	            android:layout_width="match_parent"
+	            android:layout_height="180dp">
+	            
+	            <ImageView 
+		            android:id="@+id/template_img2"
+		            android:layout_width="match_parent"
+		            android:layout_height="match_parent"
+		            android:layout_gravity="center_horizontal"
+		            android:src="@drawable/ic_launcher"
+		            android:scaleType="fitXY"/>
+	        </FrameLayout>
+	        
+	        <ImageView 
+		        android:id="@+id/template_box_radio2"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:src="@drawable/btn_radio"
+	            android:layout_gravity="center_horizontal"
+	            android:layout_marginTop="5dp"/>
+	        
+	    </LinearLayout>
+	    
+	    <LinearLayout 
+	        android:id="@+id/template03"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:orientation="vertical"
+	        android:layout_weight="1">
+	        
+	        <TextView 
+	            android:id="@+id/template_title3"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="#03"
+	            android:gravity="center_horizontal"
+	            android:layout_gravity="center_horizontal"/>
+	        
+	        <FrameLayout 
+	            android:layout_width="match_parent"
+	            android:layout_height="180dp">
+	            
+	            <ImageView 
+		            android:id="@+id/template_img3"
+		            android:layout_width="match_parent"
+		            android:layout_height="match_parent"
+		            android:layout_gravity="center_horizontal"
+		            android:src="@drawable/ic_launcher"
+		            android:scaleType="fitXY"/>
+	        </FrameLayout>
+	        
+	        <ImageView 
+		        android:id="@+id/template_box_radio3"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:src="@drawable/btn_radio"
+		        android:layout_gravity="center_horizontal"
+		        android:layout_marginTop="5dp"/>
+	        
+	    </LinearLayout>
+	    
+</LinearLayout>

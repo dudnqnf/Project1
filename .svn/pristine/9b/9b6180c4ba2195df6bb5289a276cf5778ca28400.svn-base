@@ -1,0 +1,321 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ececec"
+    android:orientation="vertical"
+    android:focusable="true"
+    android:focusableInTouchMode="true" >
+	
+   <RelativeLayout 
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/title_bar"
+        android:background="@drawable/title_info"
+        >
+        
+        <FrameLayout
+			android:id="@+id/btn_back"
+			android:layout_width="50dp"
+			android:layout_height="47dp">
+          
+          <ImageView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:src="@drawable/btn_back"
+			android:layout_gravity="center_vertical|center_horizontal"/>
+             
+        </FrameLayout>
+        
+    </RelativeLayout>   
+    
+    <ScrollView 
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/title_bar"
+        >
+    	<RelativeLayout 
+    		android:layout_width="match_parent"
+        	android:layout_height="match_parent"
+    	    >
+        	
+    	    <RelativeLayout 
+    	        android:layout_width="match_parent"
+        		android:layout_height="wrap_content"
+        		android:background="@drawable/profile_bg_re_lay01"
+        		android:id="@+id/re_lay01">
+    	    	
+    	        
+    	        <LinearLayout 
+    	            android:layout_width="wrap_content"
+        			android:layout_height="wrap_content"
+        			android:layout_centerVertical="true" 
+        			android:orientation="horizontal">
+        			
+	    	        <FrameLayout 
+	    	            android:layout_width="93dp"
+					    android:layout_height="84dp"
+	        			android:id="@+id/member_info_img_btn"
+	        			android:background="@drawable/img_member_line"
+	        			android:layout_marginLeft="15dp">
+	        			
+				    	<ImageView
+					        android:id="@+id/member_info_img"
+					        android:layout_width="93dp"
+					        android:layout_height="84dp"
+					        android:scaleType="fitXY"
+					        android:src="@drawable/img_ham_photo" />
+				    	
+			    		<ImageView 
+					        android:layout_width="match_parent"
+					        android:layout_height="wrap_content"
+					        android:src="@drawable/img_member_edit"
+					        android:layout_gravity="bottom"/>
+			    	
+			    	</FrameLayout>
+		    	
+    	        	<TextView 
+    	    	        android:layout_width="wrap_content"
+	        			android:layout_height="wrap_content"
+	        			android:id="@+id/text_id_label"
+	        			android:text="아이디"
+	        			android:textColor="#373737"
+	        			android:textSize="14sp"
+	        			android:layout_gravity="bottom"
+	        			android:layout_marginLeft="15dp"/>
+    	        	
+    	        	<TextView 
+    	    	        android:layout_width="wrap_content"
+	        			android:layout_height="wrap_content"
+	        			android:id="@+id/text_id"
+	        			android:textColor="#000000"
+	        			android:textSize="14sp"
+	        			android:layout_gravity="bottom"
+	        			android:layout_marginLeft="10dp"
+	        			/>
+    	        
+    	        </LinearLayout>
+    	        
+    	        
+    	        
+		    	
+		    </RelativeLayout>
+		
+    	    <RelativeLayout 
+    	        android:layout_width="match_parent"
+        		android:layout_height="wrap_content"
+        		android:id="@+id/re_lay02"
+        		android:background="@drawable/profile_bg_re_lay02"
+        		android:layout_below="@+id/re_lay01"
+    	        >
+		    	
+    	    	<RelativeLayout 
+	    	        android:layout_width="match_parent"
+	        		android:layout_height="70dp"
+	        		android:id="@+id/re_lay_sub01"
+	    	        >
+				
+    	    	    <TextView 
+    	    	        android:layout_width="108dp"
+	        			android:layout_height="wrap_content"
+	        			android:id="@+id/text_name"
+	        			android:text="이름"
+	        			android:textColor="#373737"
+	        			android:textSize="16sp"
+	        			android:layout_centerVertical="true"
+	        			android:layout_marginLeft="15dp"
+    	    	        />
+    	    	    
+			    	<EditText
+				        android:id="@+id/member_info_nickname_edit"
+				        android:layout_width="match_parent"
+				        android:layout_height="@dimen/edit_box_height"
+				        android:layout_toRightOf="@+id/text_name"
+				        android:background="@drawable/img_edit_box"
+				        android:singleLine="true"
+				        android:hint="입력해주세요."
+				        android:layout_centerVertical="true"
+				        android:layout_marginRight="15dp"
+				        android:text="닉네임" />
+				</RelativeLayout>
+    	        
+    	    	<RelativeLayout 
+	    	        android:layout_width="match_parent"
+	        		android:layout_height="70dp"
+	        		android:id="@+id/re_lay_sub02"
+	        		android:layout_below="@+id/re_lay_sub01"
+	    	        >
+				
+    	    	    <TextView 
+    	    	        android:layout_width="108dp"
+	        			android:layout_height="wrap_content"
+	        			android:id="@+id/text_pw"
+	        			android:textColor="#373737"
+	        			android:textSize="16sp"
+	        			android:layout_centerVertical="true"
+	        			android:text="비밀번호 변경"
+	        			android:layout_marginLeft="15dp"
+    	    	        />
+    	    	    
+			    	<EditText
+				        android:id="@+id/member_info_pw_edit"
+				        android:layout_width="match_parent"
+				        android:layout_height="@dimen/edit_box_height"
+				        android:layout_toRightOf="@+id/text_pw"
+				        android:password="true"
+				        android:background="@drawable/img_edit_box"
+				        android:singleLine="true"
+				        android:layout_centerVertical="true"
+				        android:layout_marginRight="15dp"
+				         />
+				</RelativeLayout>
+				
+    	    	<RelativeLayout 
+	    	        android:layout_width="match_parent"
+	        		android:layout_height="70dp"
+	        		android:id="@+id/re_lay_sub03"
+	        		android:layout_below="@+id/re_lay_sub02"
+	    	        >
+				
+    	    	    <TextView 
+    	    	        android:layout_width="108dp"
+	        			android:layout_height="wrap_content"
+	        			android:id="@+id/text_pw_confirm"
+	        			android:textColor="#373737"
+	        			android:textSize="16sp"
+	        			android:layout_centerVertical="true"
+	        			android:text="비밀번호 확인"
+	        			android:layout_marginLeft="15dp"
+    	    	        />
+    	    	    
+			    	<EditText
+				        android:id="@+id/member_info_pw_confirm_edit"
+				        android:layout_width="match_parent"
+				        android:layout_height="@dimen/edit_box_height"
+				        android:layout_toRightOf="@+id/text_pw_confirm"
+				        android:background="@drawable/img_edit_box"
+				        android:singleLine="true"
+				        android:password="true"
+				        android:layout_centerVertical="true"
+				        android:layout_marginRight="15dp"
+				         />
+				</RelativeLayout>
+    	    	
+    	    	
+    	    </RelativeLayout>
+    	    
+    	    
+    	     <RelativeLayout 
+    	        android:layout_width="match_parent"
+        		android:layout_height="wrap_content"
+        		android:id="@+id/re_lay03"
+        		android:background="@drawable/profile_bg_re_lay03"
+        		android:layout_below="@+id/re_lay02"
+    	        >
+		    	
+    	         
+    	         <RelativeLayout 
+    	            android:layout_width="wrap_content"
+        			android:layout_height="wrap_content"
+        			android:layout_centerVertical="true"
+        			android:layout_marginLeft="15dp"
+    	            >
+    	   
+		    	
+    	        	<TextView 
+    	    	        android:layout_width="wrap_content"
+	        			android:layout_height="wrap_content"
+	        			android:id="@+id/text_logout_label"
+	        			android:text="로그아웃"
+	        			android:textColor="#373737"
+	        			android:textSize="16sp"
+	        			/>
+    	        	
+    	        	<TextView 
+    	    	        android:layout_width="wrap_content"
+	        			android:layout_height="wrap_content"
+	        			android:id="@+id/text_logout"
+	        			android:text="계정을 로그아웃 합니다."
+	        			android:textColor="#7c7c7c"
+	        			android:textSize="15sp"
+	        			android:layout_below="@+id/text_logout_label"
+	        			/>
+    	        
+    	        </RelativeLayout>
+    	         
+    	    </RelativeLayout>
+    	    
+    	     <RelativeLayout 
+    	        android:layout_width="match_parent"
+        		android:layout_height="wrap_content"
+        		android:id="@+id/re_lay04"
+        		android:layout_below="@+id/re_lay03"
+        		android:layout_marginTop="18dp"
+        		
+    	        >
+		    	
+    	        <TableLayout 
+    	            android:layout_width="match_parent"
+        			android:layout_height="wrap_content"
+        			android:stretchColumns="0,1,2"
+    	            >
+    	        	<TableRow 
+    	        	    android:layout_weight = "1"
+    	        	    >
+		    	        <TextView 
+		    	            android:layout_width="match_parent"
+        					android:layout_height="wrap_content"
+			        		android:id="@+id/useAgree"
+			        		android:text="이용약관"
+			        		android:textColor="#fdb3b2"
+			        		android:textSize="16sp"
+			        		android:layout_gravity="center"
+			        		android:layout_span="1"
+			        	/>
+		    	        <TextView 
+		    	            android:layout_width="match_parent"
+        					android:layout_height="wrap_content"
+			        		android:id="@+id/infoAgree"
+			        		android:text="개인정보 취급방침"
+			        		android:textColor="#fdb3b2"
+			        		android:textSize="15sp"
+							android:layout_gravity="center"
+							android:layout_span="1"
+			        	/>
+    	        	</TableRow>
+				</TableLayout>
+    	         
+    	    </RelativeLayout>
+    	    
+    	     <RelativeLayout 
+    	        android:layout_width="match_parent"
+        		android:layout_height="match_parent"
+        		android:id="@+id/re_lay05"
+        		android:layout_below="@+id/re_lay04"
+        		android:layout_marginTop="50dp"
+        		android:paddingBottom="10dp"
+    	        >
+		    	
+
+			
+			     <ImageButton
+			        android:id="@+id/member_info_nickname_btn"
+			        android:layout_width="wrap_content"
+			        android:layout_height="wrap_content"
+			        android:layout_centerHorizontal="true"
+			        android:src="@drawable/btn_small_ok"
+			        android:background="@null"
+			         />
+    	        
+    	    </RelativeLayout>
+    	     
+    	     
+    	     
+    	    
+    	     
+
+   		</RelativeLayout>
+    
+    </ScrollView>
+</RelativeLayout>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PullToRefresh>
+    <LoadingLayouts>
+       <layout name="rotate">com.takebox.wedding.pulltorefresh.RotateLoadingLayout</layout>
+       <layout name="flip">com.takebox.wedding.pulltorefresh.FlipLoadingLayout</layout>
+    </LoadingLayouts>
+    <IndicatorLayouts>
+       <layout name="default">com.takebox.wedding.pulltorefresh.DefaultIndicatorLayout</layout>
+    </IndicatorLayouts>
+    <GoogleStyleViewLayouts>
+       <layout name="default">com.takebox.wedding.pulltorefresh.DefaultGoogleStyleViewLayout</layout> 
+    </GoogleStyleViewLayouts>
+    <GoogleStyleProgressLayouts>
+       <layout name="default">com.takebox.wedding.pulltorefresh.DefaultGoogleStyleProgressLayout</layout> 
+    </GoogleStyleProgressLayouts>    
+</PullToRefresh>

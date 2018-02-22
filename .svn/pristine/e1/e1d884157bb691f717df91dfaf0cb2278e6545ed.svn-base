@@ -1,0 +1,113 @@
+package com.takebox.wedding;
+
+import android.app.Activity;
+import android.app.ProgressDialog;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.FrameLayout;
+import android.widget.Toast;
+
+import com.google.analytics.tracking.android.EasyTracker;
+import com.takebox.wedding.util.GMailSender;
+
+/**
+ * @author sujong
+ * 메뉴 - 문의하기 
+ */
+public class QnAActivity extends Activity {
+
+	FrameLayout backBtn;
+	GMailSender sender;
+	ProgressDialog dialog;
+	EditText question;
+	EditText request_email;
+	
+	/** Called when the activity is first created. */
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+	    super.onCreate(savedInstanceState);
+	
+	    // TODO Auto-generated method stub
+	    setContentView(R.layout.activity_inquire);
+	    
+	    backBtn = (FrameLayout)findViewById(R.id.btn_back);
+		backBtn.setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {
+				finish();
+			}
+		});
+		
+		question = (EditText)findViewById(R.id.question);
+		request_email = (EditText)findViewById(R.id.request_email);
+		
+		Button btn = (Button)findViewById(R.id.inquire_send_btn);
+		btn.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				sender = new GMailSender("takebox.co.kr@gmail.com", "1xpdlzmqkrtm"); // SUBSTITUTE ID PASSWORD
+				timeThread();
+			}
+		});
+  		
+	}
+	
+	public void timeThread() {
+
+		dialog = new ProgressDialog(this);
+		dialog = new ProgressDialog(this);
+		dialog.setTitle("Loading...");
+		dialog.setMessage("문의사항을 보내는 중입니다.");
+		dialog.setIndeterminate(true);
+		dialog.setCancelable(true);
+		dialog.show();
+		new Thread(new Runnable() {
+
+			public void run() {
+				// TODO Auto-generated method stub
+				try {
+					sender.sendMail("문의사항", // subject.getText().toString(),
+							"응답받을 이메일 : " + request_email.getText().toString() + "\n" +
+							"문의사함 : " + question.getText().toString(), // body.getText().toString(),
+							request_email.getText().toString(), // from.getText().toString(),
+							"help@takebox.co.kr" // to.getText().toString()
+					);
+					sleep(3000);
+				} catch (Exception e) {
+					Log.e("SendMail", e.getMessage(), e);
+					Toast.makeText(QnAActivity.this, "신청 실패", Toast.LENGTH_SHORT)
+							.show();
+
+
+				}
+				dialog.dismiss();
+			}
+
+			private void sleep(int i) {
+				// TODO Auto-generated method stub
+
+			}
+
+		}).start();
+	}
+
+	@Override
+	public void onStart() {
+		super.onStart();
+		//analytics 분석도구 
+		EasyTracker.getInstance(this).activityStart(this);  // Add this method.
+	}
+
+	@Override
+	public void onStop() {
+		super.onStop();
+		//analytics 분석도구 
+		EasyTracker.getInstance(this).activityStop(this);  // Add this method.
+
+	}
+
+
+}

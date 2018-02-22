@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">웨딩박스</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+
+    
+    <!-- 페이스북 앱 ID  -->
+     <string name="facebook_app_id">813463332019698</string>
+    
+    
+    
+    <string name="menu_zoom_enable">Enable Zoom</string>
+    <string name="menu_zoom_disable">Disable Zoom</string>
+    <string name="menu_scale_fit_center">Change to FIT_CENTER</string>
+    <string name="menu_scale_fit_start">Change to FIT_START</string>
+    <string name="menu_scale_fit_end">Change to FIT_END</string>
+    <string name="menu_scale_fit_xy">Change to FIT_XY</string>
+    <string name="menu_scale_center">Change to CENTER</string>
+    <string name="menu_scale_center_inside">Change to CENTER_INSIDE</string>
+    <string name="menu_scale_center_crop">Change to CENTER_CROP</string>
+    <string name="menu_zoom_random_animate">Animate scale to random value</string>
+    <string name="menu_zoom_random">Set scale to random value</string>
+    <string name="menu_matrix_restore">Restore Display Matrix</string>
+    <string name="menu_matrix_capture">Capture Display Matrix</string>
+    <string name="extract_visible_bitmap">Extract visible bitmap</string>
+    <string name="menu_lock">Lock</string>
+    <string name="menu_unlock">Unlock</string>
+    <string name="main_top_name1">HYOJIN</string>
+    <string name="male_name">JITAE</string>
+    <string name="female_name">HYOJIN</string>
+    <string name="main_date">2014.11.11 pm 01:00 | HYATTE</string>
+    <string name="sample_date">2014.11.11 pm 01:00 | HYATTE</string>
+    <string name="sample_category">전체</string>
+    <string name="default_bio">사랑이란 이름으로 두 사람이 하나 되는 아름다운 날입니다. 부디 참석하셔서 자리를 빛내주시고, 사진도 많이 찍어주세요.</string>
+    
+    
+    
+    
+    
+    
+    
+    <string name="cancelled">Cancelled</string>
+    <string name="permission_not_granted">Unable to perform selected action because permissions were not granted.</string>
+    <string name="ok">OK</string>
+    <string name="hello_user">Hello %1$s!</string>
+    <string name="success">Success</string>
+    <string name="successfully_posted_post">Successfully posted \'%1$s\'.\nPost ID: %2$s</string>
+    <string name="error">Error</string>
+    <string name="status_update">Updating status for %1$s at %2$s</string>
+    <string name="photo_post">Photo Post</string>
+    <string name="you_picked">You picked:</string>
+    <string name="no_friends_selected">&lt;No friends selected&gt;</string>
+    <string name="no_place_selected">&lt;No place selected&gt;</string>
+    <string name="pick_seattle_place">Pick a Seattle Place</string>
+    <string name="exception">Exception: %1$s</string>
+    <string name="str_done">완료</string>
+    <string name="profile_button">프로필</string>
+    <string name="country_label">국가코드</string>
+    <string name="inquire_text1">
+        	안녕하세요? 웨딩박스입니다.\n
+			먼저 웨딩박스에 관심을 주신 점 진심으로 감사합니다.\n
+			웨딩박스에 궁금하신 사항이나 질문을 편하게 말씀해주세요.\n
+			아주 작은 질문이라도 성심성의껏 확인하고 있습니다.
+	</string>
+	<string name="inquire_text2">문의사항</string>
+	<string name="inquire_text3">응답받을 이메일</string>
+    
+</resources>

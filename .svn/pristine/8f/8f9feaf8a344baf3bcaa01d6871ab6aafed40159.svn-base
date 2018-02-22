@@ -1,0 +1,93 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#ffffff"
+    >
+    
+    <RelativeLayout 
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/title_bar"
+        android:background="@drawable/title_inquiry">
+        
+        <FrameLayout
+			android:id="@+id/btn_back"
+			android:layout_width="50dp"
+			android:layout_height="50dp">
+          
+          <ImageView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:src="@drawable/btn_back"
+			android:layout_gravity="center_vertical|center_horizontal"/>
+             
+        </FrameLayout>
+
+        
+    </RelativeLayout>   
+    
+	<RelativeLayout 
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/title_bar"
+        >
+        
+	    <LinearLayout 
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:orientation="vertical"
+	        android:padding="5dp">
+	        
+	        <TextView 
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:text="@string/inquire_text1"/>
+	    
+		    <TextView 
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_marginTop="10dp"
+		        android:layout_marginLeft="5dp"
+		        android:text="@string/inquire_text2"/>
+	        
+	    	<EditText
+	    	    android:id="@+id/question"
+	    	    android:layout_width="match_parent"
+	    	    android:layout_height="120dp"
+	    	    android:layout_marginTop="5dp"
+	    	    android:inputType="textMultiLine"
+	    	    android:background="@drawable/img_edit_box"/>
+	    	
+	    	<TextView 
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_marginTop="10dp"
+		        android:layout_marginLeft="5dp"
+		        android:text="@string/inquire_text3"/>
+	    	
+	    	<EditText
+	    	    android:id="@+id/request_email"
+	    	    android:layout_width="match_parent"
+	    	    android:layout_height="wrap_content"
+	    	    android:layout_marginTop="5dp"
+	    	    android:inputType="textWebEmailAddress"
+	    	    android:background="@drawable/img_edit_box"/>
+	    	
+	    	<Button 
+	    	    android:id="@+id/inquire_send_btn"
+	    	    android:layout_width="wrap_content"
+	    	    android:layout_height="wrap_content"
+	    	    android:layout_marginTop="10dp"
+	    	    android:minHeight="1dp"
+	    	    android:layout_gravity="center_horizontal"
+	    	    android:background="@drawable/btn_send"/>
+    	
+	    </LinearLayout>
+        
+    </RelativeLayout>
+    
+
+</LinearLayout>

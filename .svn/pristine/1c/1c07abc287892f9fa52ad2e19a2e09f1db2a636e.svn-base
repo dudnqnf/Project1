@@ -1,0 +1,123 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:focusable="true"
+    android:focusableInTouchMode="true" >
+
+    <LinearLayout 
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#f7f7f7"
+        android:orientation="vertical">
+        
+		<FrameLayout 
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:id="@+id/title_bar"
+	        android:background="@drawable/login_title"
+	        >
+
+	    </FrameLayout>
+		    
+	    <Button 
+            android:id="@+id/login_facebook_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minHeight="1dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="22dp"
+            android:layout_marginLeft="17dp"
+            android:layout_marginRight="17dp"
+            android:background="@drawable/btn_facebook"
+            android:visibility="visible" />
+        
+        <com.kakao.widget.LoginButton
+	        android:id="@+id/activity_login_kakao_btn"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_gravity="center_horizontal"
+	        android:layout_marginTop="7dp"
+	        android:background="@drawable/btn_log_kakao"
+	        android:layout_marginLeft="17dp"
+            android:layout_marginRight="17dp" />
+        
+        <Button 
+            android:id="@+id/login_google_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+	        android:layout_marginTop="7dp"
+            android:background="@drawable/btn_log_google"
+            android:minHeight="1dp"
+            android:minWidth="1dp"
+            android:layout_marginLeft="17dp"
+            android:layout_marginRight="17dp" />
+        
+        <Button 
+            android:id="@+id/login_naver_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+	        android:layout_marginTop="7dp"
+            android:background="@drawable/btn_log_naver"
+            android:minHeight="1dp"
+            android:minWidth="1dp"
+            android:layout_marginLeft="17dp"
+            android:layout_marginRight="17dp" />
+        
+        <ImageView 
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="17dp"
+	        android:layout_marginRight="17dp"
+	        android:layout_marginTop="17dp"
+            android:src="@drawable/login_text01"/>
+        
+		<EditText 
+		    android:id="@+id/login_email_edit"
+		    android:layout_width="match_parent"
+            android:layout_height="@dimen/edit_box_height"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="14dp"
+            android:background="@drawable/img_edit_box"
+            android:ems="10"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:singleLine="true"
+            android:hint="이메일"
+            android:padding="4dp"
+            android:inputType="textEmailAddress" />
+		
+		<EditText 
+		    android:id="@+id/login_password_edit"
+		    android:layout_width="match_parent"
+            android:layout_height="@dimen/edit_box_height"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="14dp"
+            android:background="@drawable/img_edit_box"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:singleLine="true"
+            android:ems="10"
+            android:hint="비밀번호"
+            android:padding="4dp"
+            android:inputType="textPassword" />
+
+		<Button
+            android:id="@+id/activity_login_ok_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="37dp"
+            android:background="@drawable/btn_small_confirm"
+            android:minHeight="1dp"
+            android:minWidth="1dp" />
+		    
+		           
+        
+
+    </LinearLayout>
+    
+    
+</RelativeLayout>

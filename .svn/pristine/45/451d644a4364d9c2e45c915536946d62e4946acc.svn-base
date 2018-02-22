@@ -1,0 +1,47 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bsck_invid"
+    android:orientation="vertical"
+    android:focusable="true"
+    android:focusableInTouchMode="true" >
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="138dp"
+        android:src="@drawable/icon_wdbox" />
+
+    <ImageView
+        android:id="@+id/imageView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="28dp"
+        android:src="@drawable/text_invid" />
+
+    <EditText
+        android:id="@+id/invite_id_input_edit"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/edit_box_height"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/img_edit_box"
+        android:padding="4dp"
+        android:singleLine="true" />
+
+    <Button
+        android:id="@+id/invite_id_ok_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="30dp"
+        android:minWidth="1dp"
+        android:minHeight="1dp"
+        android:background="@drawable/btn_small_confirm" />
+
+</LinearLayout>

@@ -1,0 +1,59 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#ffffff" >
+    
+   <FrameLayout 
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/title_list"
+        android:layout_marginBottom="1dp">
+        
+        <FrameLayout
+			android:id="@+id/invite_list_back_btn"
+			android:layout_width="50dp"
+			android:layout_height="50dp">
+          
+          <ImageView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:src="@drawable/btn_back"
+			android:layout_gravity="center_vertical|center_horizontal"/>
+             
+        </FrameLayout>
+        
+
+    </FrameLayout>
+    
+    <ImageView
+        android:id="@+id/imageView1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scaleType="fitXY"
+        android:src="@drawable/title_protagonist" />
+    
+    <ListView
+        android:id="@+id/invite_list_admin"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1" >
+    </ListView>
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:scaleType="fitXY"
+        android:src="@drawable/title_guest" />
+    
+    <ListView
+        android:id="@+id/invite_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1" >
+    </ListView>
+
+</LinearLayout>

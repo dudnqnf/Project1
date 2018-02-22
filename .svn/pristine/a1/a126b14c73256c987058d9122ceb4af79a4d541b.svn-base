@@ -1,0 +1,144 @@
+package com.takebox.wedding;
+
+import java.util.ArrayList;
+
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.BaseAdapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
+
+public class SetupBioActivity extends Activity {
+	
+	ListView list;
+	ArrayList<BioData> arr;
+	BioAdapter mAdapter;
+	EditText text;
+	Button btn;
+	TextView lengthText;
+	private int maxLength = 120;
+
+	/** Called when the activity is first created. */
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+	    super.onCreate(savedInstanceState);
+	    setContentView(R.layout.activity_join_setup_bio);
+	    
+	    text = (EditText)findViewById(R.id.setup_bio_edittext);
+	    String bio = getIntent().getStringExtra("bio");
+	    text.setText(bio);
+	    
+	    list = (ListView)findViewById(R.id.setup_bio_list);
+	    arr = new ArrayList<BioData>();
+	    arr = BioData.get_bio();
+	    mAdapter = new BioAdapter(SetupBioActivity.this, R.layout.bio_box, arr);
+	    list.setAdapter(mAdapter);
+	    list.setOnItemClickListener(new OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				// TODO Auto-generated method stub
+				String bio = arr.get(position).bio;
+				text.setText(bio);
+			}
+		});
+	    
+	    btn = (Button)findViewById(R.id.setup_bio_confirm);
+	    btn.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Intent intent = new Intent(SetupBioActivity.this, JoinSetupProfileActivity.class);
+				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+				intent.putExtra("bio", text.getText().toString());
+				setResult(RESULT_OK, intent);
+				finish();
+				overridePendingTransition(0, 0);
+			}
+		});
+	    
+	    lengthText = (TextView)findViewById(R.id.lengthText);
+		lengthText.setText(maxLength+"");
+	    
+	    text.addTextChangedListener(new TextWatcher() {
+			public void afterTextChanged(Editable s) {
+				try {
+
+					lengthText.setText((maxLength - text.length())+"");
+					
+					if((maxLength-text.length())==0){
+						 Toast.makeText(SetupBioActivity.this, "120자까지 가능합니다.", Toast.LENGTH_SHORT).show();
+					}
+					
+				} catch (Exception e) {
+					// TODO: handle exception
+				}
+			}
+			@Override
+			public void onTextChanged(CharSequence s, int start, int before, int count) {
+			}
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count,
+					int after) {
+			}
+		});
+	}
+
+}
+
+class BioAdapter extends BaseAdapter {
+	
+	Context mContext;
+	LayoutInflater Inflater;
+	ArrayList<BioData> arrlist;
+	int mLayout;
+	
+	public BioAdapter(Context context, int layout, ArrayList<BioData> list){
+		mContext = context;
+		Inflater = (LayoutInflater)context.getSystemService(context.LAYOUT_INFLATER_SERVICE);
+		arrlist = list;
+		mLayout = layout;
+	}
+
+	@Override
+	public int getCount() {
+		return arrlist.size();
+	}
+
+	@Override
+	public Object getItem(int position) {
+		return arrlist.get(position);
+	}
+
+	@Override
+	public long getItemId(int position) {
+		return position;
+	}
+
+	@Override
+	public View getView(int position, View convertView, ViewGroup parent) {
+		if(convertView == null) {
+			convertView = Inflater.inflate(mLayout, parent, false);
+		}
+		
+		String bio = arrlist.get(position).bio;
+		TextView bio_box = (TextView)convertView.findViewById(R.id.bio_box);
+		bio_box.setText(bio);
+		
+		return convertView;
+	}
+	
+}

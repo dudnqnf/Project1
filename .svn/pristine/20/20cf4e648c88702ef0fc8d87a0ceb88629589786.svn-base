@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <ListView
+        android:id="@+id/setup_bio_list"
+        android:layout_width="match_parent"
+        android:layout_height="215dp" >
+    </ListView>
+
+	<RelativeLayout 
+        android:layout_width="match_parent"
+	    android:layout_height="130dp"
+	    android:layout_marginTop="10dp"
+	    android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+	    android:layout_gravity="center_horizontal"
+        >
+        
+	    <EditText
+	       android:id="@+id/setup_bio_edittext"
+	       android:layout_width="wrap_content"
+	       android:layout_height="130dp"
+	       android:layout_gravity="center_horizontal"
+	       android:background="@drawable/img_edit_box"
+	       android:maxLength="120"
+	       android:hint="@string/default_bio" />
+	
+	 	<TextView 
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:id="@+id/lengthText"
+	        android:layout_alignParentRight="true"
+	        android:layout_alignParentBottom="true"
+	        android:layout_marginRight="4dp"
+	        android:layout_marginBottom="4dp"
+	        android:textColor="#cccccc"
+			android:paddingLeft="8dp"
+			android:paddingRight="8dp"
+	        android:background="@drawable/final_repl_input03"
+	        />
+	
+    </RelativeLayout>
+    
+	<Button
+	        android:id="@+id/setup_bio_confirm"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="Button" />
+
+</LinearLayout>

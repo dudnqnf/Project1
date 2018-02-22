@@ -1,0 +1,1112 @@
+package com.takebox.wedding;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import android.app.AlertDialog;
+import android.app.DownloadManager.Request;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.inputmethodservice.KeyboardView;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.support.v4.view.ViewPager;
+import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.androidquery.AQuery;
+import com.google.analytics.tracking.android.EasyTracker;
+import com.takebox.wedding.dialog.AlbumShareDialog;
+import com.takebox.wedding.dialog.AlertDialogBuilder;
+import com.takebox.wedding.info.Info;
+import com.takebox.wedding.model.AlbumModel;
+import com.takebox.wedding.util.CustomTextFont;
+import com.takebox.wedding.util.Time;
+
+/**
+ * @author sujong
+ * 앨범 사진 상세 
+ */
+public class DetailAlbumActivity extends HttpExceptionActivity {
+
+	private Thread mThread = null;
+
+	private ArrayList<RepleItem> items;
+	private ArrayList<LikeItem> items2;
+	private ListView lv_list;
+	private RepleItemAdapter adapter;
+	private likeItemAdapter adapter2;
+
+	private String con_seq;
+	private String like_count;
+	private String cmt_cnt;
+	private String w_u_nick;
+	private String w_u_id;
+	private String w_u_picture;
+	private String w_u_sns_picture;
+	private String reg_date;
+
+	private JSONArray reple_array;
+	private JSONArray content_array;
+	private JSONArray like_array;
+
+	private View header;
+
+	public ViewPager mPager;
+	public LinearLayout mPagerPoints;
+	public ArrayList<ImageView> pointImgArray;
+	private Boolean scoll_flag = false;
+	
+	private int flag = 0;		//좋아요를 클릭한것인지 댓글을 클릭한것인지 체크 0이면 댓글, 1이면 좋아요
+	private String info;
+	LinearLayout detail_reple;
+
+	String adminAuth;
+	String userId;
+	String male_name;
+	String female_name;
+	int position;
+	FrameLayout detail_config_btn;
+	ImageView btn_sub_modify;
+	ImageView btn_sub_delete;
+	ImageView mPlayButton;
+	
+	TextView tv_content;
+	LinearLayout tv_content_edit;
+	EditText edit_text;
+	LinearLayout editlayout;
+	
+	public String videoYn = null;
+	public EditText et_reple;
+	
+	/** Called when the activity is first created. */
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+
+		// TODO Auto-generated method stub
+		setContentView(R.layout.activity_detail_album);
+		
+		header = getLayoutInflater().inflate(R.layout.detail_header, null, false);
+
+		editlayout = (LinearLayout)findViewById(R.id.EditLayout);
+		//	수정, 삭제 버튼 보이게 하기
+		detail_config_btn = (FrameLayout)findViewById(R.id.detail_config_btn);
+		detail_config_btn.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				if(editlayout.getVisibility() == View.VISIBLE){
+					editlayout.setVisibility(View.INVISIBLE);
+				} else {
+					editlayout.setVisibility(View.VISIBLE);
+				}
+				
+			}
+		});
+		
+		
+		tv_content = (TextView)header.findViewById(R.id.detail_content_txt);
+		tv_content_edit = (LinearLayout)header.findViewById(R.id.detail_content_edit);
+		edit_text = (EditText)header.findViewById(R.id.detail_content_edit_text);
+		Button edit_btn = (Button)header.findViewById(R.id.detail_content_edit_btn);
+		
+		//게시글 고치기
+		btn_sub_modify = (ImageView)findViewById(R.id.btn_sub_modify);
+		btn_sub_modify.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				editlayout.setVisibility(View.INVISIBLE);
+				if(tv_content.getVisibility()==View.VISIBLE){
+					tv_content.setVisibility(View.GONE);
+					tv_content_edit.setVisibility(View.VISIBLE);
+					edit_text.setText(tv_content.getText());
+				} else {
+					tv_content.setVisibility(View.VISIBLE);
+					tv_content_edit.setVisibility(View.GONE);
+				}
+			}
+		});
+		
+		//수정하기 버튼 클릭시
+		edit_btn.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				//통신
+				processParsing(mThread, content_edit);
+				
+				tv_content.setText(edit_text.getText().toString());
+				tv_content.setVisibility(View.VISIBLE);
+				tv_content_edit.setVisibility(View.GONE);
+				
+				//새로고침
+				MainActivity.editedContent = edit_text.getText().toString();
+				MainActivity.editedListPos = position;
+			}
+		});
+		
+		
+		//게시글 지우기
+		btn_sub_delete = (ImageView)findViewById(R.id.btn_sub_delete);
+		btn_sub_delete.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				AlertDialog.Builder alt_bld = new AlertDialog.Builder(DetailAlbumActivity.this);
+			    alt_bld.setMessage("정말로 삭제하시겠습니까?").setCancelable(
+			        false).setNegativeButton("아니요",
+			    	        new DialogInterface.OnClickListener() {
+				        public void onClick(DialogInterface dialog, int id) {
+				            return;
+				        }
+			        }).setPositiveButton("네",
+			    	        new DialogInterface.OnClickListener() {
+				        public void onClick(DialogInterface dialog, int id) {
+				        	processParsing(mThread, content_delete);
+				        	MainActivity.firstExcutePlug = false;
+				        }
+			        });
+			    AlertDialog alert = alt_bld.create();
+			    // Title for AlertDialog
+			    alert.show();
+			}
+		});
+		
+		//	게시물 공유하기
+		Button detail_share_btn = (Button)findViewById(R.id.detail_share_btn);
+		detail_share_btn.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				AlbumShareDialog pop_share = new AlbumShareDialog(DetailAlbumActivity.this, DetailAlbumActivity.this);
+				pop_share.show();
+			}
+		});
+
+		//사용자 정보, 댓글정보, 라이크정보
+		Intent intent = getIntent();
+		String[] data = intent.getStringArrayExtra("DATA");
+		adminAuth = intent.getStringExtra("auth");		
+		userId = intent.getStringExtra("userId");
+		male_name = intent.getStringExtra("male_name");
+		female_name = intent.getStringExtra("female_name");
+		position = intent.getIntExtra("position", -1);
+		
+		final String img = data[0];
+		String content = data[1];
+		con_seq = data[2];
+		w_u_nick = data[3];
+		w_u_id = data[4];
+		w_u_picture = data[5];
+		w_u_sns_picture = data[6];
+		reg_date = data[7];
+		like_count = data[8];
+		cmt_cnt = data[9];
+
+		
+		
+		
+		lv_list = (ListView)findViewById(R.id.detail_list);
+
+		lv_list.addHeaderView(header);
+		
+		detail_reple = (LinearLayout)findViewById(R.id.detail_reple);
+		
+
+
+		//앨범 이미지 
+//		ImageView iv_img = (ImageView)header.findViewById(R.id.detail_img);
+//		AQuery aq = new AQuery(DetailAlbumActivity.this);
+//		aq.id(iv_img).image(img, true, true);
+//		iv_img.setOnClickListener(new OnClickListener() {
+//
+//			@Override
+//			public void onClick(View v) {
+//				// TODO Auto-generated method stub
+//
+//				Intent intent = new Intent(DetailAlbumActivity.this, ViewPagerActivity.class);
+//				intent.putExtra("IMAGE", img);
+//				startActivity(intent);
+//			}
+//		});
+		
+		//프로필 이미지
+		ImageView profile_img = (ImageView)header.findViewById(R.id.detail_profile_img);
+		if(!w_u_picture.equalsIgnoreCase("null") && !w_u_picture.equalsIgnoreCase("")){
+			String img_name = w_u_picture;
+			String img_url = Info.MASTER_FILE_URL + "/image/"+ img_name;
+			AQuery aq = new AQuery(DetailAlbumActivity.this);
+			aq.id(profile_img).image(img_url, true, true);
+		} else if(!w_u_sns_picture.equalsIgnoreCase("null") && !w_u_sns_picture.equalsIgnoreCase("")){
+			String img_name = w_u_sns_picture;
+			String img_url = img_name;
+			AQuery aq = new AQuery(DetailAlbumActivity.this);
+			aq.id(profile_img).image(img_url, true, true);
+		}
+		
+		TextView detail_header_female_name = (TextView)findViewById(R.id.detail_header_female_name);
+		detail_header_female_name.setText(female_name);
+		detail_header_female_name.setTypeface(CustomTextFont.hunsomsatangR);
+		TextView detail_header_male_name = (TextView)findViewById(R.id.detail_header_male_name);
+		detail_header_male_name.setText(male_name);
+		detail_header_male_name.setTypeface(CustomTextFont.hunsomsatangR);
+		
+		//슬라이드 메뉴 프로필 이름
+		TextView tv = (TextView)header.findViewById(R.id.detail_profile_text1);
+		tv.setTypeface(CustomTextFont.NanumGothicBold);
+		//닉네임 설정
+		if(!w_u_nick.equalsIgnoreCase("null")){
+			tv.setText(w_u_nick);
+		} else {
+			tv.setText(w_u_id);
+		}
+		
+		//게시글 등록날짜
+		tv = (TextView)header.findViewById(R.id.detail_profile_text2);
+		tv.setTypeface(CustomTextFont.NanumGothic);
+		if(!reg_date.equalsIgnoreCase("null")){
+			Time.regdate(tv, reg_date, 2);
+		} else {
+			tv.setText("");
+		}
+
+
+		//내용
+		tv_content.setText(content);
+		tv_content.setTypeface(CustomTextFont.hunsomsatangR);
+		
+		//댓글
+		TextView comments = (TextView)header.findViewById(R.id.comments);
+		comments.setText("댓글("+cmt_cnt+")");
+		
+		//좋아요
+		TextView likes = (TextView)header.findViewById(R.id.likes);
+		likes.setText("좋아요("+like_count+")");
+
+		//뒤로가기
+		FrameLayout btn_back = (FrameLayout)findViewById(R.id.btn_back);
+		btn_back.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				finish();
+			}
+		});
+		
+		final TextView comments_tv = (TextView)findViewById(R.id.comments);
+		final TextView likes_tv = (TextView)findViewById(R.id.likes);
+
+
+		//리플 탭 버튼
+		final FrameLayout btn_reple = (FrameLayout)findViewById(R.id.detail_reple_btn);
+		//좋아요 탭 버튼
+		final FrameLayout btn_like = (FrameLayout)findViewById(R.id.detail_like_btn);
+		btn_reple.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				detail_reple.setVisibility(View.VISIBLE);
+				
+				flag = 0;		//오느쪽 버튼이 눌려있는지.
+				btn_reple.setBackgroundResource(R.drawable.tab_comment_on);
+				comments_tv.setTextColor(0xff686868);
+				
+				btn_like.setBackgroundResource(R.drawable.tab_like_off);
+				likes_tv.setTextColor(0xffffffff);
+				
+				adapter = new RepleItemAdapter(DetailAlbumActivity.this, R.layout.row_like, items);
+				lv_list.setAdapter(adapter);
+			}
+		});
+
+
+		
+		btn_like.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				detail_reple.setVisibility(View.GONE);
+				
+				flag = 1;		//오느쪽 버튼이 눌려있는지.
+				
+				btn_reple.setBackgroundResource(R.drawable.tab_comment_off);
+				TextView tv = (TextView)findViewById(R.id.comments);
+				comments_tv.setTextColor(0xffffffff);
+				
+				btn_like.setBackgroundResource(R.drawable.tab_like_on);
+				likes_tv.setTextColor(0xff686868);
+				
+				adapter2 = new likeItemAdapter(DetailAlbumActivity.this, R.layout.row_like, items2);
+				lv_list.setAdapter(adapter2);
+
+			}
+		});
+
+
+
+		//댓글 쓰기
+		Button btn_reple_write = (Button)findViewById(R.id.detail_ok_btn);
+		et_reple = (EditText)findViewById(R.id.detail_reple_edit);
+		et_reple.setTypeface(CustomTextFont.hunsomsatangR);
+		String focus = intent.getStringExtra("focus");
+		if(focus.equals("yes")){
+			et_reple.requestFocus();
+		}
+		btn_reple_write.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				String comment =  et_reple.getText().toString();
+
+				if(comment.isEmpty()){
+					AlertDialog dialog = AlertDialogBuilder.pop_ok(DetailAlbumActivity.this, "내용을 입력해 주세요.").create();
+					dialog.show(); 
+					return;
+				}
+				MainActivity.editedComment = "add";
+				MainActivity.editedListPos = position;
+				processParsing(mThread, write_reple);
+			}
+		});
+
+
+
+		//processParsing(mThread, get_reple_list);
+
+		
+		setAdminAuthFunction();
+		
+		processParsing(mThread, get_album_detail);
+	}
+
+	
+	public void setImagePoint(int count){
+		pointImgArray = new ArrayList<ImageView>();
+		for(int i = 0; i<count; i++){
+			ImageView img = new ImageView(getApplicationContext());
+			img.setImageResource(R.drawable.picture_focus_off);
+			pointImgArray.add(img);
+			mPagerPoints.addView(pointImgArray.get(i));
+			pointImgArray.get(i).setPadding(5, 0, 5, 0);
+		}
+		pointImgArray.get(0).setImageResource(R.drawable.picture_focus_on);
+		
+		
+		if(count < 2){
+			mPagerPoints.setVisibility(View.GONE);
+		}
+	}
+	
+
+	public void setAdminAuthFunction(){
+		
+		
+		if(userId.compareTo(w_u_id)==0){ //자기 글
+			//수정,삭제 둘다
+//			btn_sub_modify.setVisibility(View.VISIBLE);
+//			btn_sub_delete.setVisibility(View.VISIBLE);
+		}else if(userId.compareTo(w_u_id)!=0 && adminAuth.compareTo("admin")==0){//자기글 아니고 관리자
+			//삭제만 가능
+			btn_sub_delete.setVisibility(View.VISIBLE);
+			btn_sub_modify.setVisibility(View.GONE);
+		}else{
+			//권한 없음
+			btn_sub_delete.setVisibility(View.GONE);
+			btn_sub_modify.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					// TODO Auto-generated method stub
+					baseDialog("수정 권한이 없습니다.");
+				}
+			});
+		}
+		
+//		detail_config_btn.setVisibility(View.VISIBLE);
+//		btn_sub_modify.setVisibility(View.VISIBLE);
+//		btn_sub_delete.setVisibility(View.VISIBLE);
+		
+		Log.i("tag", "detail userId :" + userId);
+		Log.i("tag", "detail admin :" + adminAuth);
+		Log.i("tag", "detail w_u_id :" + w_u_id);
+		
+	}
+	
+	private final Runnable get_album_detail = new Runnable() {
+		@Override
+		public void run() {
+			get_album_detail();
+		}
+	};
+	
+	//게시글 삭제
+	private final Runnable content_delete = new Runnable() {
+		@Override
+		public void run() {
+			content_delete();
+		}
+	};
+	
+	//게시글 수정
+	private final Runnable content_edit = new Runnable() {
+		@Override
+		public void run() {
+			content_edit();
+		}
+	};
+	
+	/**
+	 * 컨텐츠 삭제하기
+	 */
+	protected void content_delete() {
+		// TODO Auto-generated method stub
+		Map<String, String> data = new HashMap<String,String>();
+
+		data.put("con_seq", con_seq);
+
+		JSONObject obj = AlbumModel.procDelContent(data);
+		if(!isHttpWorthCheck(obj)){
+			if(pd.isShowing())
+				pd.dismiss();
+			return;
+		}else{
+			try {
+				if(obj.getString("info").equals("session-out")){
+					reLogin();
+					return;
+				}
+			}catch(JSONException e) {
+				e.printStackTrace();
+			}
+		}
+
+		try {
+			info = obj.getString("info").toString();
+
+			//성공
+			if(info.equals("ok")){
+				handler.sendEmptyMessage(2);
+			} else {
+				handler.sendEmptyMessage(6);
+			}
+			
+			return;
+
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	} 
+	
+	
+	/**
+	 * 컨텐츠 수정하기
+	 */
+	protected void content_edit() {
+		// TODO Auto-generated method stub
+		Map<String, String> data = new HashMap<String,String>();
+
+		data.put("content_seq", con_seq);
+		data.put("content", edit_text.getText().toString());
+
+		JSONObject obj = AlbumModel.procEditContent(data);
+		if(!isHttpWorthCheck(obj)){
+			if(pd.isShowing())
+				pd.dismiss();
+			return;
+		}else{
+			try {
+				if(obj.getString("info").equals("session-out")){
+					reLogin();
+					return;
+				}
+			}catch(JSONException e) {
+				e.printStackTrace();
+			}
+		}
+
+		try {
+			info = obj.getString("info").toString();
+
+			//성공
+			if(info.equals("ok")){
+				handler.sendEmptyMessage(7);
+			} else {
+				handler.sendEmptyMessage(8);
+			}
+			
+			return;
+
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	} 
+
+
+
+
+	/**
+	 * 댓글 리스트를 가져온다
+	 */
+	protected void get_reple_list() {
+		// TODO Auto-generated method stub
+		Map<String, String> data = new HashMap<String,String>();
+
+		data.put("con_seq", con_seq);
+
+		JSONObject obj = AlbumModel.procGetRepleList(data);
+		if(!isHttpWorthCheck(obj)){
+			if(pd.isShowing())
+				pd.dismiss();
+			return;
+		}else{
+			try {
+				if(obj.getString("info").equals("session-out")){
+					reLogin();
+					return;
+				}
+			}catch(JSONException e) {
+				e.printStackTrace();
+			}
+		}
+
+		try {
+			reple_array = new JSONArray(obj.getString("cmtList"));
+
+			//성공
+			handler.sendEmptyMessage(1);
+			return;
+
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	} 
+
+	//게시글 정보 가져오기
+	protected void get_album_detail() {
+		// TODO Auto-generated method stub
+		Map<String, String> data = new HashMap<String,String>();
+
+		data.put("content_id", con_seq);
+
+		JSONObject obj = AlbumModel.procGetAlbumDetail(data);
+		if(!isHttpWorthCheck(obj)){
+			if(pd.isShowing())
+				pd.dismiss();
+			return;
+		}else{
+			try {
+				if(obj.getString("info").equals("session-out")){
+					reLogin();
+					return;
+				}
+			}catch(JSONException e) {
+				e.printStackTrace();
+			}
+		}
+
+		try {
+			content_array = new JSONArray(obj.getString("contentList"));
+			reple_array = new JSONArray(obj.getString("cmtList"));
+			like_array = new JSONArray(obj.getString("likeUserList"));
+
+			JSONObject	temp = content_array.getJSONObject(0);
+			
+			videoYn = temp.getString("video_yn");
+			
+			Log.i("tag", "content_array : " + content_array.toString() );
+			
+			handler.sendEmptyMessage(1);
+				
+			return;
+
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+
+	private final Runnable write_reple = new Runnable() {
+		@Override
+		public void run() {
+			write_reple();
+		}
+	};
+
+	/**
+	 * 댓글 작성
+	 */
+	protected void write_reple() {
+
+		String comment =  et_reple.getText().toString();
+
+		Map<String, String> data = new HashMap<String,String>();
+		data.put("con_seq", con_seq);
+		data.put("comment", comment);
+
+		JSONObject obj = AlbumModel.procWriteReple(data);
+		if(!isHttpWorthCheck(obj)){
+			if(pd.isShowing())
+				pd.dismiss();
+			return;
+		}else{
+			try {
+				if(obj.getString("info").equals("session-out")){
+					reLogin();
+					return;
+				}
+			}catch(JSONException e) {
+				e.printStackTrace();
+			}
+		}
+
+
+
+
+		try {
+
+			reple_array = new JSONArray(obj.getString("cmtList"));
+
+			//성공
+			handler.sendEmptyMessage(5);
+			return;
+
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+
+
+	}
+
+
+	private final Runnable get_reple_list = new Runnable() {
+		@Override
+		public void run() {
+			get_reple_list();
+		}
+	};
+
+
+	private final Handler handler = new Handler() {
+		@Override
+		public void handleMessage(final Message msg) {
+
+			switch(msg.what) {
+
+			case 1:
+
+				if(pd!=null) pd.cancel();
+				//댓글 리스트 가져오기 성공
+				show_comment_list();
+				//좋아요 리스트 가져오기 성공
+				show_like_list();
+
+				show_image();
+
+				break;
+				
+			case 2:
+				
+				if(pd!=null) pd.cancel();
+				//메인화면으로 가기
+				go_home();
+
+			case 5:
+				if(pd!=null) pd.cancel();
+				//댓글 작성 성공
+
+				et_reple.setText("");
+				TextView tv = (TextView)findViewById(R.id.comments);
+				int comment_cnt = Integer.parseInt(tv.getText().toString().substring(3,4));		//코멘트개수
+				tv.setText("댓글("+(comment_cnt+1)+")");
+
+				InputMethodManager imm= (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+				imm.hideSoftInputFromWindow(et_reple.getWindowToken(), 0);
+
+				show_comment_list();
+
+				break;
+
+			case 6:
+				if(pd!=null) pd.cancel();
+				Toast.makeText(DetailAlbumActivity.this, "실패", Toast.LENGTH_SHORT).show();
+				//댓글 작성 실패
+				break;
+				
+			case 7:
+				if(pd!=null) pd.cancel();
+				//댓글 작성 성공
+//				Toast.makeText(DetailAlbumActivity.this, "성공", Toast.LENGTH_SHORT).show();
+
+				break;
+
+			case 8:
+				if(pd!=null) pd.cancel();
+				
+				Toast.makeText(DetailAlbumActivity.this, "게시글 수정에 실패하였습니다.", Toast.LENGTH_SHORT).show();
+				//댓글 작성 실패
+				
+				break;
+
+			}
+		}
+	};
+
+
+	public class RepleItemAdapter extends ArrayAdapter<RepleItem>  {
+
+		private ArrayList<RepleItem> items;
+
+		public RepleItemAdapter(Context context, int textViewResourceId,
+				ArrayList<RepleItem> items) {
+			super(context, textViewResourceId, items);
+
+			this.items = items;
+		}
+
+		@Override
+		public View getView(int position, View convertView, ViewGroup parent) {
+			final int pos = position;
+			View v = convertView;
+			if (v == null) {
+				LayoutInflater vi = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+				v = vi.inflate(R.layout.row_reple, null);
+			}
+
+
+			final RepleItem p = items.get(position);
+
+			if (p != null) {
+
+				TextView row_name = (TextView) v.findViewById(R.id.row_name);
+				row_name.setTypeface(CustomTextFont.NanumGothicBold);
+				TextView row_date = (TextView)v.findViewById(R.id.row_date);
+				row_date.setTypeface(CustomTextFont.NanumGothic);
+				TextView row_content = (TextView)v.findViewById(R.id.row_content);
+				row_content.setTypeface(CustomTextFont.hunsomsatangR);
+				ImageView row_img = (ImageView)v.findViewById(R.id.row_reple_profile_img);
+				
+				String img_name = "null";
+				if(!p.social_img.equals("") && !p.social_img.equals("null")){
+					img_name = p.social_img;
+				}else if(!p.img.equals("") && !p.img.equals("null")){
+					img_name = p.img;
+				}
+				
+				String img_url = Info.DEFAULT_IMG;
+				if(sns_img_check(img_name)){
+					img_url = img_name;
+				} else {
+					img_url = Info.MASTER_FILE_URL + "/image/"+ img_name;
+				}
+				if(!img_name.equals("null") && !img_name.equals("")){
+					AQuery aq = new AQuery(DetailAlbumActivity.this);
+					aq.id(row_img).image(img_url, true, true);
+				}
+				
+				if(p.nicname.equals("null") && p.nicname.equals("")){
+					row_name.setText(p.name);
+				} else {
+					row_name.setText(p.nicname);
+				}
+					
+				Time.CalculateOvertime(row_date, "20"+p.date);
+				row_content.setText(p.content);
+
+			}
+			return v;
+		}
+
+
+
+
+	}
+
+	
+	public class likeItemAdapter extends ArrayAdapter<LikeItem>  {
+
+		private ArrayList<LikeItem> items;
+
+		public likeItemAdapter(Context context, int textViewResourceId,
+				ArrayList<LikeItem> items) {
+			super(context, textViewResourceId, items);
+
+			this.items = items;
+		}
+
+		@Override
+		public View getView(int position, View convertView, ViewGroup parent) {
+			final int pos = position;
+			View v = convertView;
+			if (v == null) {
+				LayoutInflater vi = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+				v = vi.inflate(R.layout.row_like, null);
+			}
+
+
+			final LikeItem p = items.get(position);
+
+			if (p != null) {
+
+				ImageView row_like_img = (ImageView) v.findViewById(R.id.row_like_img);
+				TextView row_name = (TextView)v.findViewById(R.id.row_name);
+				row_name.setTypeface(CustomTextFont.NanumGothicBold);
+				
+				String img_name = "null";
+				if(!p.social_img.equals("") && !p.social_img.equals("null")){
+					img_name = p.social_img;
+				}else if(!p.img.equals("") && !p.img.equals("null")){
+					img_name = p.img;
+				}
+				
+				String img_url = Info.DEFAULT_IMG;
+				if(sns_img_check(img_name)){
+					img_url = img_name;
+				} else {
+					img_url = Info.MASTER_FILE_URL + "/image/"+ img_name;
+				}
+				if(!img_name.equals("null") && !img_name.equals("")){
+					AQuery aq = new AQuery(DetailAlbumActivity.this);
+					aq.id(row_like_img).image(img_url, true, true);
+				}
+				
+				if(!p.nicname.equals("null") && !p.nicname.equals("")){
+					row_name.setText(p.nicname);
+				}else{
+					row_name.setText(p.name);
+				}
+			}
+			return v;
+		}
+	}
+
+	/**
+	 * 댓글 리스트 보여주기
+	 */
+	protected void show_comment_list() {
+		// TODO Auto-generated method stub
+
+
+		items = new ArrayList<RepleItem>();
+
+
+
+		int list_cnt = reple_array.length();
+
+		for(int i = 0 ; i < list_cnt ; i++){
+
+			try {
+				JSONObject obj = reple_array.getJSONObject(i);
+
+				RepleItem item = new RepleItem();
+
+				item.name = obj.getString("cmt_u_id");
+				item.nicname = obj.getString("cmt_u_nick");;
+				item.img = obj.getString("cmt_u_picture");;
+				item.social_img = obj.getString("cmt_u_sns_picture");;
+				item.date = obj.getString("reg_date");
+				item.content = obj.getString("content");
+				
+
+				items.add(item);
+
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+
+		}
+		adapter = new RepleItemAdapter(DetailAlbumActivity.this, R.layout.row_reple, items);
+		lv_list.setAdapter(adapter);
+		
+		if(scoll_flag){
+
+			lv_list.setSelection(list_cnt);
+		}
+		scoll_flag = true;
+	}
+	
+	
+	//좋아요 리스트 출력
+	protected void show_like_list() {
+		// TODO Auto-generated method stub
+
+
+		items2 = new ArrayList<LikeItem>();
+
+
+
+		int list_cnt = like_array.length();
+
+		for(int i = 0 ; i < list_cnt ; i++){
+
+			try {
+				JSONObject obj = like_array.getJSONObject(i);
+
+				LikeItem item = new LikeItem();
+
+				item.name = obj.getString("u_id");
+				item.nicname = obj.getString("u_nick");
+				item.img = obj.getString("file_name");
+				item.social_img = obj.getString("social_file_name");
+				
+
+				items2.add(item);
+
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+
+		}
+
+	}
+	
+	
+	//메인페이지로 돌아가기
+	protected void go_home() {
+		Intent intent = new Intent(DetailAlbumActivity.this, MainActivity.class);
+		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
+		startActivity(intent);
+		finish();
+		overridePendingTransition(0, 0);
+	}
+
+
+	protected void show_image() {
+		// TODO Auto-generated method stub
+		
+		
+		mPager = (ViewPager)header.findViewById(R.id.pager);
+		mPagerPoints = (LinearLayout)header.findViewById(R.id.point_layout);
+		mPlayButton = (ImageView)header.findViewById(R.id.play_button);
+		
+		String []images = null;
+		if(videoYn.compareTo("Y")==0){
+			JSONObject temp;
+			try {
+				temp = content_array.getJSONObject(0);
+				String file_name = temp.getString("thumnail_file");
+				String videoUrl = Info.MASTER_FILE_URL+"/video/"+temp.getString("file_name");
+				images = new String[1];
+				images[0] = Info.MASTER_FILE_URL+"/image/"+file_name;
+				
+				mPlayButton.setVisibility(View.VISIBLE);
+				mPager.setAdapter(new PagerAdapterClass(getApplicationContext(), images, videoYn, videoUrl));
+				
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+		}else{
+			images = new String[content_array.length()];
+			for(int i=0; i< content_array.length(); i++){
+				try {
+					JSONObject	obj = content_array.getJSONObject(i);
+					String file_name = obj.getString("file_name");
+					images[i] = Info.MASTER_FILE_URL+"/image/"+file_name;
+					
+					
+					
+					mPlayButton.setVisibility(View.GONE);
+					mPager.setAdapter(new PagerAdapterClass(getApplicationContext(), images));
+					
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+			}
+			setImagePoint(images.length);
+		}
+		
+		mPager.setOnPageChangeListener(new OnPageChangeListener() {
+			
+			@Override
+			public void onPageSelected(int arg0) {
+				// TODO Auto-generated method stub
+				for(int i=0; i<pointImgArray.size();i++){
+					pointImgArray.get(i).setImageResource(R.drawable.picture_focus_off);
+				}
+				pointImgArray.get(arg0).setImageResource(R.drawable.picture_focus_on);
+			}
+			
+			@Override
+			public void onPageScrolled(int arg0, float arg1, int arg2) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void onPageScrollStateChanged(int arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+		
+	}
+
+	@Override
+	public void onBackPressed() {
+		if(tv_content_edit.getVisibility()==View.VISIBLE){
+			tv_content_edit.setVisibility(View.GONE);
+			tv_content.setVisibility(View.VISIBLE);
+			editlayout.setVisibility(View.VISIBLE);
+			return;
+		}
+		if(editlayout.getVisibility()==View.VISIBLE){
+			editlayout.setVisibility(View.GONE);
+		} else {
+			finish();
+		}
+	}
+	
+
+	@Override
+	public void onStart() {
+		super.onStart();
+		//analytics 분석도구 
+		EasyTracker.getInstance(this).activityStart(this);  // Add this method.
+	}
+
+	@Override
+	public void onStop() {
+		super.onStop();
+		//analytics 분석도구 
+		EasyTracker.getInstance(this).activityStop(this);  // Add this method.
+
+	}
+
+
+}

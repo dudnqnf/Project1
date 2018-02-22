@@ -1,0 +1,71 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:background="#f5f5f5"
+    android:orientation="vertical" >
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <ImageView
+            android:id="@+id/header_profile_img"
+            android:layout_width="fill_parent"
+            android:layout_height="233dp"
+            android:layout_gravity="center_horizontal"
+            android:focusable="false" />
+        
+        <!--  
+        <android.support.v4.view.ViewPager
+	        android:id="@+id/header_profile_img"
+	        android:layout_width="fill_parent"
+	        android:layout_height="180dp"
+	        android:layout_margin="12dp" >
+	    </android.support.v4.view.ViewPager>
+	    -->
+
+    </FrameLayout>
+
+    <RelativeLayout
+        android:id="@+id/album_category"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:background="@drawable/box_more"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp" >
+	
+        <ImageView 
+            android:layout_width="wrap_content"
+        	android:layout_height="wrap_content"
+        	android:layout_centerVertical="true"
+        	android:src="@drawable/icon_arrow"
+        	android:layout_marginLeft="7dp"
+        	android:id="@+id/icon"
+            />
+        
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/album_category_text"
+            android:layout_toRightOf="@+id/icon"
+            android:layout_weight="1"
+            android:background="@null"
+            android:layout_marginLeft="7dp"
+            android:layout_centerVertical="true"
+            android:text="@string/sample_category" />
+		
+    </RelativeLayout>
+    
+    <ImageView 
+        android:id="@+id/main_default_img"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:src="@drawable/main_img_cdedit_photoarea"
+        android:layout_gravity="center_horizontal"/>
+
+</LinearLayout>

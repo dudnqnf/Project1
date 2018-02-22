@@ -1,0 +1,92 @@
+package com.takebox.wedding.dialog;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.opengl.Visibility;
+import android.os.Handler;
+import android.os.Message;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.takebox.wedding.CategoryEditActivity;
+import com.takebox.wedding.CategoryEditData;
+import com.takebox.wedding.model.WeddingModel;
+import com.takebox.wedding.util.CustomTextFont;
+import com.takebox.wedding.util.CustomUtil;
+import com.takebox.wedding.R;
+
+class SelectCategoryAdapter extends BaseAdapter{
+	Context mContext;
+	LayoutInflater Inflater;
+	static ArrayList<CategoryEditData> arrlist = new ArrayList<CategoryEditData>();
+	private ProgressDialog pd = null;
+	private Thread mThread = null;
+	int mLayout;
+	
+	private String cata_seq;
+	private int mPosition;
+	
+	
+	public SelectCategoryAdapter(Context context, int layout, ArrayList<CategoryEditData> list){
+		mContext = context;
+		Inflater = (LayoutInflater)context.getSystemService(context.LAYOUT_INFLATER_SERVICE);
+		arrlist = list;
+		mLayout = layout;
+	}
+	
+	@Override
+	public int getCount() {
+		return arrlist.size();
+	}
+
+	@Override
+	public CategoryEditData getItem(int position) {		
+		return arrlist.get(position);
+	}
+
+	@Override
+	public long getItemId(int position) {
+		return position;
+	}
+
+	@Override
+	public View getView(int position, View convertView, ViewGroup parent) {
+		final int pos = position;
+		if(convertView == null) {
+			convertView = Inflater.inflate(mLayout, parent, false);
+		}
+		
+		final String category_no = arrlist.get(position).cata_seq;
+		
+		TextView category = (TextView)convertView.findViewById(R.id.category);
+		String name = arrlist.get(position).category+"";
+		category.setText(name);
+		category.setTypeface(CustomTextFont.NanumGothic);
+
+		
+		
+		ImageView icon = (ImageView)convertView.findViewById(R.id.category_icon);
+		String cate = category.getText().toString();
+		icon.setImageResource(CustomUtil.getCategory(cate));
+		
+		Button btn = (Button)convertView.findViewById(R.id.categoryAddDel);
+		btn.setVisibility(View.GONE);
+		
+		return convertView;
+	}
+}

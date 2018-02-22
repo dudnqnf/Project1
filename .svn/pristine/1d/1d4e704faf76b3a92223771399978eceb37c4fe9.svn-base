@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.takebox.wedding"
+    android:versionCode="18"
+    android:versionName="1.1.6" >
+
+    <uses-sdk
+        android:minSdkVersion="10"
+        android:targetSdkVersion="16" />
+
+    <!-- GCM 관련 퍼미션 -->
+	<permission android:name="com.takebox.wedding.permission.C2D_MESSAGE" android:protectionLevel="signature" />
+	<uses-permission android:name="com.takebox.wedding.permission.C2D_MESSAGE" />
+	<!-- GCM 받기 -->
+	<uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+	<!-- GCM을 받으려면 구글 계정 필요 -->
+	<uses-permission android:name="android.permission.GET_ACCOUNTS" />
+	<!-- 메시지 받을 때 wake up 하기 위해 -->
+	<uses-permission android:name="android.permission.WAKE_LOCK" />
+    
+	
+	
+	<!-- 네트워크 상태 확인 -->
+	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+	
+    <!-- 인터넷 사용 -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="com.android.vending.BILLING"/>
+    
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/luncher_icon"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme" 
+        android:largeHeap="true" >
+        
+        <!-- GCM 리시버 -->
+		<receiver
+			android:name="com.google.android.gcm.GCMBroadcastReceiver"
+			android:permission="com.google.android.c2dm.permission.SEND" >
+			<intent-filter>
+				<action android:name="com.google.android.c2dm.intent.RECEIVE" />
+				<action android:name="com.google.android.c2dm.intent.REGISTRATION" />
+				<category android:name="com.takebox.wedding" /> <!-- 젤리빈 부터는 category 빼도 된다 -->
+			</intent-filter>
+		</receiver>
+
+		<!-- GCM 리시버에서 돌리는 서비스 -->
+		<service android:name="com.takebox.wedding.GCMIntentService" /><!-- 서비스명 변경하면 안됨 -->
+        
+        <activity
+            android:name="com.takebox.wedding.IntroActivity" android:screenOrientation="portrait"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <intent-filter>
+	            <action android:name="android.intent.action.VIEW" />
+	            <category android:name="android.intent.category.DEFAULT" />
+	            <category android:name="android.intent.category.BROWSABLE" />
+	            <data android:scheme="@string/kakao_scheme" android:host="@string/kakaolink_host" />
+	        </intent-filter>
+        </activity>
+        <activity android:name="MainActivity" android:screenOrientation="portrait"></activity>
+        <activity android:name="StartActivity" android:screenOrientation="portrait"> 
+        </activity>
+        <activity android:name="JoinActivity" android:screenOrientation="portrait"></activity>
+        <activity android:name="LoginActivity" android:screenOrientation="portrait"></activity>
+        <activity android:name="EnterActivity" android:screenOrientation="portrait"></activity>
+        <activity android:name="JoinSetupBasicActivity" android:screenOrientation="portrait"></activity>
+        <activity android:name="JoinSetupProfileActivity" android:screenOrientation="portrait"></activity>
+        <activity android:name="JoinSetupIDActivity" android:screenOrientation="portrait"></activity>
+        <activity android:name="ProfileViewActivity" android:screenOrientation="portrait"></activity>
+        <activity android:name="ProfileEditActivity" android:screenOrientation="portrait"></activity>
+        <activity android:name="ViewPagerActivity"></activity>
+        <activity android:name="RoomListActivity" android:screenOrientation="portrait"></activity>
+        <activity android:name="BlankActivity" android:screenOrientation="portrait"></activity>
+        <activity android:name="MemberProvisionActivity" android:screenOrientation="portrait"></activity>
+        <activity android:name="ShoppingActivity" android:screenOrientation="portrait"></activity>
+ 		<activity android:name="InitialAppInfoActivity" android:theme="@android:style/Theme.Translucent.NoTitleBar" android:screenOrientation="portrait"></activity>
+        
+        <!-- 커스텀 크롭 -->
+        <activity android:name="com.takebox.wedding.custom.CustomCropImageActivity"
+   			android:configChanges="orientation|keyboardHidden" android:screenOrientation="portrait" 
+            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen"/>    
+        
+        
+        <!-- 카카오톡 --> 
+        <activity android:name="KakaoLinkActivity" android:screenOrientation="portrait">
+        </activity>
+        <activity android:name="KakaoDirectActivity" android:screenOrientation="portrait"></activity>
+        <meta-data android:name="com.kakao.sdk.AppKey" android:value="@string/kakao_app_key"/>
+    
+        <!-- 페이스북 -->
+         <activity android:name="com.facebook.LoginActivity"
+                  android:theme="@android:style/Theme.Translucent.NoTitleBar"
+                  android:label="@string/app_name" />
+        <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id" />
+    
+    
+    	<!-- 갤러리 -->
+    	<activity android:name="com.luminous.pick.CustomGalleryActivity" >
+            <intent-filter>
+                <action android:name="com.takebox.wedding.ACTION_PICK" />
+                <action android:name="com.takebox.wedding.ACTION_MULTIPLE_PICK" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+    	<activity android:name="NoticeActivity" android:screenOrientation="portrait"></activity>
+    	<activity android:name="AboutActivity" android:screenOrientation="portrait"></activity>
+    	<activity android:name="InviteListActivity" android:screenOrientation="portrait"></activity>
+    	<activity android:name="MemberInfoActivity" 
+    	    android:windowSoftInputMode="stateAlwaysHidden"
+    	    android:screenOrientation="portrait"></activity>
+    	<activity android:name="AppInfoActivity" android:screenOrientation="portrait"></activity>
+    	<activity android:name="QnAActivity" android:screenOrientation="portrait"></activity>
+    	<activity 
+    	    android:name="DetailAlbumActivity" 
+    	    android:screenOrientation="portrait">
+    	</activity>
+    	<activity android:name="DetailVideoActivity"></activity>
+		<activity android:name="CategoryEditActivity" android:screenOrientation="portrait"></activity>
+    	<activity android:name="AboutUseActivity" android:screenOrientation="portrait"></activity>
+    	<activity android:name="InviteIDActivity" android:screenOrientation="portrait"></activity>
+    	<activity android:name="RoomConfirmActivity" android:screenOrientation="portrait"></activity>
+    	<activity android:name="FacebookActivity"></activity>
+    	<activity android:name="AboutUseActivityStart"></activity>
+    	<activity android:name="RecommendAppActivity"></activity>
+    	<activity android:name="KakaoLinkAppRecomActivity"></activity>
+    	<activity android:name="InviteFriendActivity"></activity>
+    	<activity android:name="IntroLoginActivity"></activity>
+    	<activity android:name="FacebookFriendList"></activity>
+    	<activity android:name="NaverMapActivity"></activity>
+    	<activity android:name="com.takebox.kakaotalk.KakaoTalkLoginActivity"></activity>
+    	<activity android:name="com.takebox.kakaotalk.KakaoTalkMainActivity"></activity>
+    	<activity android:name="com.takebox.wedding.KakaoTalkSignupActivity"></activity>
+    	<activity android:name="com.kakao.LoginActivity"></activity>
+    	<activity android:name="MainSetupActivity"></activity>
+    	<meta-data 
+    	    android:name="com.google.android.gms.version" 
+    	    android:value="@integer/google_play_services_version" />
+    	<!-- [naveroauthlogin][start] 네이버아이이로로그인을 사용하기 위해서 넣어줘야하는 부분 -->
+        <activity android:name="com.nhn.android.naverlogin.ui.OAuthLoginActivity" android:configChanges="orientation" android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
+        <activity android:name="com.nhn.android.naverlogin.ui.OAuthLoginInAppBrowserActivity" android:label="OAuth2.0 In-app" android:screenOrientation="portrait"/>
+        <!-- [naveroauthlogin][end] -->
+        <activity android:name="SetupBioActivity"></activity>
+        <activity android:name="DeleteRoomActivity"></activity>
+        <activity android:name="TemplateEditActivity"></activity>
+        
+    </application>
+
+</manifest>

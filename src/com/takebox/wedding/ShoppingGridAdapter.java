@@ -1,0 +1,216 @@
+package com.takebox.wedding;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.Intent;
+import android.os.Handler;
+import android.os.Message;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.webkit.WebView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.androidquery.AQuery;
+import com.takebox.wedding.dialog.AlertDialogBuilder;
+import com.takebox.wedding.model.MemberModel;
+import com.takebox.wedding.model.WeddingModel;
+import com.takebox.wedding.util.CustomTextFont;
+import com.takebox.wedding.R;
+import com.takebox.wedding.ShoppingActivity.ShoppingGridItem;
+
+
+public class ShoppingGridAdapter extends ArrayAdapter<ShoppingGridItem> {
+
+	private ArrayList<ShoppingGridItem> items;
+
+	private Context mContext;
+	private Activity mActivity;
+
+	private int items_size;
+	private Thread mThread = null;
+	private ProgressDialog pd = null;
+	private String shop_title;
+
+	public ShoppingGridAdapter(ShoppingActivity activity, int textViewResourceId, ArrayList<ShoppingGridItem> items) {
+		super(activity.getApplicationContext(), textViewResourceId, items);
+		mContext = activity.getApplicationContext();
+		mActivity = activity;
+		this.items = items;
+
+		items_size = items.size();
+	}
+	
+	LayoutInflater vi;
+	@Override
+	public View getView(int position, View convertView, ViewGroup parent) {
+		final int pos = position;
+		View v = convertView;
+
+		if(pos % 2 != 0){
+			if(v == null){
+				vi = (LayoutInflater)mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+			}
+			v = vi.inflate(R.layout.row_blank, null);
+			return v;
+		}
+
+		if (v == null) {
+			vi = (LayoutInflater)mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+		}
+		v = vi.inflate(R.layout.shopping_grid, null);
+
+		final ShoppingGridItem p = items.get(pos);
+		final ShoppingGridItem p2;
+		if(items_size > pos + 1){
+			p2 = items.get(pos + 1);
+		}else{
+			p2 = null;
+		}
+
+		if (p != null) {
+			TextView tv_text1 = (TextView)v.findViewById(R.id.shopping_text1);
+			tv_text1.setText(p.title);
+			tv_text1.setTypeface(CustomTextFont.hunsomsatangR);
+			final String title = p.title;
+			
+			ImageView iv_img1 = (ImageView)v.findViewById(R.id.shopping_img1);
+			
+			if(!p.img.equals("")){
+				//이미지 출력
+				AQuery aq =new AQuery(mContext);
+				aq.id(iv_img1).image(p.img, true, true);
+			}else{
+				iv_img1.setVisibility(View.INVISIBLE);
+			}
+
+			iv_img1.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					// TODO Auto-generated method stub
+					shop_title = title;
+					processParsing(mThread, shoping_check);
+					((ShoppingActivity) mActivity).onItemClick(p.url);
+				}
+			});
+
+		}
+
+		if (p2 != null) {
+			
+			TextView tv_text2 = (TextView)v.findViewById(R.id.shopping_text2);
+			tv_text2.setText(p2.title);
+			tv_text2.setTypeface(CustomTextFont.hunsomsatangR);
+			final String title = p2.title;
+			
+			ImageView iv_img2 = (ImageView)v.findViewById(R.id.shopping_img2);
+
+			if(!p2.img.equals("")){
+				//이미지 출력
+				AQuery aq =new AQuery(mContext);
+				aq.id(iv_img2).image(p2.img, true, true);
+			}else{
+				iv_img2.setVisibility(View.INVISIBLE);
+			}
+			iv_img2.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					// TODO Auto-generated method stub
+					shop_title = title;
+					processParsing(mThread, shoping_check);
+					((ShoppingActivity) mActivity).onItemClick(p2.url);
+				}
+			});
+		}
+		return v;
+	}
+	
+	public void processParsing(Thread thread, Runnable runnable) {
+		pd = new ProgressDialog(mActivity);
+		pd.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+		pd.setTitle(null);
+		pd.setMessage("로드중...");
+		pd.show();
+
+		thread = new Thread(runnable);
+		thread.start();
+	}
+	
+	private final Runnable shoping_check = new Runnable() {
+		@Override
+		public void run() {
+			shoping_check();
+		}
+	};
+
+	protected void shoping_check() {
+		// TODO Auto-generated method stub
+
+		Map<String, String> data = new HashMap<String,String>();
+		data.put("shop_title", shop_title);
+
+		JSONObject obj = WeddingModel.saveShopInfo(data);
+
+		try {
+			String info = obj.getString("info");
+
+			//에러코드 확인
+			if(info.equals("ok")){
+				//성공
+				handler.sendEmptyMessage(1);
+			}else if(info.equals("fail")){
+				//실패
+				handler.sendEmptyMessage(2);
+			}
+			return;
+
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+	
+	private final Handler handler = new Handler() {
+		@Override
+		public void handleMessage(final Message msg) {
+
+			switch(msg.what) {
+
+			case 1:
+
+				if(pd!=null) pd.cancel(); //등록 성공
+
+				break;
+			case 2:
+				if(pd!=null) pd.cancel();
+				//등록 실패
+
+				Toast.makeText(mContext, "서버와의 통신에 실패하였습니다.", Toast.LENGTH_SHORT).show();
+				
+				break;
+
+			}
+		}
+
+	};
+	
+}
+
+
